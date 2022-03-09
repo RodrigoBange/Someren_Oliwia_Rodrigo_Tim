@@ -28,7 +28,7 @@ namespace SomerenUI
 
         private void ShowPanel(string panelName)
         {
-            if (panelName == "Dashboard" && !pnlDashboard.Visible) // If the panelName is Dashboard and is not visible...
+            if (panelName == "Dashboard") // If the panelName is Dashboard...
             {
                 // Hide all other panels
                 HideAllPanels();
