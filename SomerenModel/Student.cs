@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 namespace SomerenModel
 {
     public class Student
-    { 
-        public string Name { get; set; }
-        public int Number { get; set; } // StudentNumber, e.g. 474791
-        public DateTime BirthDate { get; set; }
+    {
+        public int Number { get; set; } // Student's ID
+        public string FirstName { get; set; } // Student's first name
+        public string LastName { get; set; } // Student's last name
+        public DateTime BirthDate { get; set; } // Student's birth date
     }
 }

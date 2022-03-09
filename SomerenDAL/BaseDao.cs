@@ -7,20 +7,20 @@ namespace SomerenDAL
 {
     public abstract class BaseDao
     {
+        // Variables
         private SqlDataAdapter adapter;
         private SqlConnection conn;
 
         public BaseDao()
         {
-            // DO NOT FORGET TO INSERT YOUR CONNECTION STRING NAMED 'SOMEREN DATABASE' IN YOUR APP.CONFIG!!
-            /*
-                conn = new SqlConnection(ConfigurationManager.ConnectionStrings["SomerenDatabase"].ConnectionString);
-                adapter = new SqlDataAdapter();
-             */
+            // Create new SQL connection (With App.config information) and adapter
+            conn = new SqlConnection(ConfigurationManager.ConnectionStrings["SomerenDatabase"].ConnectionString);
+            adapter = new SqlDataAdapter();             
         }
 
         protected SqlConnection OpenConnection()
         {
+            // Try creating a connection
             try
             {
                 if (conn.State == ConnectionState.Closed || conn.State == ConnectionState.Broken)
@@ -28,7 +28,7 @@ namespace SomerenDAL
                     conn.Open();
                 }
             }
-            catch (Exception e)
+            catch (Exception e) // Catch and display error
             {
                 //Print.ErrorLog(e);
                 throw;
@@ -38,6 +38,7 @@ namespace SomerenDAL
 
         private void CloseConnection()
         {
+            // Close the connection
             conn.Close();
         }
 

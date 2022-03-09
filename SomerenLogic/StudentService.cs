@@ -11,15 +11,19 @@ namespace SomerenLogic
 {
     public class StudentService
     {
+        // Variables
         StudentDao studentdb;
 
+        // Constructor
         public StudentService()
         {
+            // Create new StudentDAO object
             studentdb = new StudentDao();
         }
 
         public List<Student> GetStudents()
         {
+            // Create new Student object list and return the list
             List<Student> students = studentdb.GetAllStudents();
             return students;
         }

@@ -14,24 +14,42 @@ namespace SomerenDAL
     {      
         public List<Student> GetAllStudents()
         {
-            string query = "SELECT student_id, student_name FROM [TABLE]";
+            // Create query
+            string query = "SELECT Student_Id, First_Name, Last_Name, Birth_Date FROM STUDENT";
             SqlParameter[] sqlParameters = new SqlParameter[0];
+
+            // Return result of query
             return ReadTables(ExecuteSelectQuery(query, sqlParameters));
         }
 
         private List<Student> ReadTables(DataTable dataTable)
         {
+            // Create new list of Student objects
             List<Student> students = new List<Student>();
 
-            foreach (DataRow dr in dataTable.Rows)
+            try
             {
-                Student student = new Student()
+                // For each data row, set all data to new Student object
+                foreach (DataRow dr in dataTable.Rows)
                 {
-                    Number = (int)dr["student_id"],
-                    Name = (string)(dr["student_name"].ToString())
-                };
-                students.Add(student);
+                    Student student = new Student()
+                    {
+                        Number = (int)dr["Student_Id"],
+                        FirstName = (string)(dr["First_Name"].ToString()),
+                        LastName = (string)(dr["Last_Name"].ToString()),
+                        BirthDate = (DateTime)(dr["Birth_Date"])
+                    };
+                    // Add new Student object to list of Students
+                    students.Add(student);
+                }
             }
+            catch (Exception e)
+            {
+                throw new Exception("There is an issue reading the student data from the database.");
+            }
+           
+            
+            // Return list of Student objects
             return students;
         }
     }
