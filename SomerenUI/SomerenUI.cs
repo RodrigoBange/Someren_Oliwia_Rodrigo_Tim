@@ -98,11 +98,22 @@ namespace SomerenUI
 
                 try
                 {
-                    /* Add code here for the teacher part (Look at student code above and what columns there are for teacher)
-                     * Also you're gonna have to create a TeacherDAO.cs in SomerenDAL and TeacherService.cs in SomerenLogic
-                     * I already set up the Teacher.cs in SomerenModel
-                     * Good luck and ask questions!! :D 
-                     */
+                    // fill the teachers listview within the teachers panel with a list of teachers
+                    TeacherService teacherService = new TeacherService();
+                    List<Teacher> teacherList = teacherService.GetTeachers();
+
+                    // clear the listview ITEMS before filling it again !!Using list.Clear() will remove the column headers too.
+                    listViewTeachers.Items.Clear();
+
+                    // For each Teacher object in the list, create a new List Item and fill details before adding it.
+                    foreach (Teacher t in teacherList)
+                    {
+                        ListViewItem li = new ListViewItem(t.Number.ToString());
+                        li.SubItems.Add(t.FirstName);
+                        li.SubItems.Add(t.LastName);
+                        //li.SubItems.Add(t.Supervises.ToString());
+                        listViewTeachers.Items.Add(li);
+                    }
 
                 }
                 catch (Exception e)
@@ -112,6 +123,8 @@ namespace SomerenUI
                      *   !!an user uses it they will only the see message box with the error, and with an OK button.
                      */
                     MessageBox.Show("Something went wrong while loading the teachers: " + e.Message);
+
+
                 }
             }
         }

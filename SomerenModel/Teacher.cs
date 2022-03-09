@@ -11,6 +11,6 @@ namespace SomerenModel
         public int Number { get; set; } // Teacher's ID
         public string FirstName { get; set; } // Teacher's first name
         public string LastName { get; set; } // Teacher's last name
-        public bool Supervises { get; set; } // Teacher supervises
+        //public bool Supervises { get; set; } // Teacher supervises
     }
 }
