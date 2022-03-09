@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -71,6 +72,20 @@ namespace SomerenUI
                      *    !!an user uses it they will only the see message box with the error, and with an OK button.
                      */
                     MessageBox.Show("Something went wrong while loading the students: " + e.Message);
+
+                    // Save error to text file
+                    string writePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+                    string filePath = Path.Combine(writePath, "Log.txt");
+
+                    using (StreamWriter writer = new StreamWriter(filePath, true)) //If file exists, add to it or create a new file
+                    {
+                        writer.WriteLine($"An error occured: {e.Message}");
+                        writer.WriteLine(e.StackTrace);
+                        writer.WriteLine("-----------");
+
+                        //Close writer
+                        writer.Close();
+                    }
                 }
             }
             else if (panelName == "Teachers" && !pnlTeachers.Visible) // If the panelName is Teachers and is not visible...
