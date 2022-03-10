@@ -67,15 +67,13 @@ namespace SomerenUI
                 }
                 catch (Exception e)
                 {
-                    /* Display message box when an error occured with the appropiate error
-                     *    !!When debugging and an exception occurs it will still break(This is a VS setting), but when
-                     *    !!an user uses it they will only the see message box with the error, and with an OK button.
-                     */
-                    MessageBox.Show("Something went wrong while loading the students: " + e.Message);
-
                     // Save error to text file
                     string writePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
                     string filePath = Path.Combine(writePath, "Log.txt");
+
+                    // Display message box when an error occured with the appropiate error
+                    MessageBox.Show("Something went wrong while loading the students: " + e.Message + Environment.NewLine 
+                        + "Error log location: " + filePath);
 
                     using (StreamWriter writer = new StreamWriter(filePath, true)) //If file exists, add to it or create a new file
                     {
@@ -111,20 +109,35 @@ namespace SomerenUI
                         ListViewItem li = new ListViewItem(t.Number.ToString());
                         li.SubItems.Add(t.FirstName);
                         li.SubItems.Add(t.LastName);
-                        //li.SubItems.Add(t.Supervises.ToString());
+                        if (t.Supervises)
+                        {
+                            li.SubItems.Add("Yes");
+                        }
+                        else { li.SubItems.Add("No"); }
                         listViewTeachers.Items.Add(li);
                     }
 
                 }
                 catch (Exception e)
                 {
-                    /* Display message box when an error occured with the appropiate error
-                     *   !!When debugging and an exception occurs it will still break(This is a VS setting), but when
-                     *   !!an user uses it they will only the see message box with the error, and with an OK button.
-                     */
-                    MessageBox.Show("Something went wrong while loading the teachers: " + e.Message);
+                    // Save error to text file
+                    string writePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+                    string filePath = Path.Combine(writePath, "Log.txt");
 
+                    // Display message box when an error occured with the appropiate error
+                    MessageBox.Show("Something went wrong while loading the teachers: " 
+                        + e.Message + Environment.NewLine + "Error log location: " + filePath);
 
+                    using (StreamWriter writer = new StreamWriter(filePath, true)) //If file exists, add to it or create a new file
+                    {
+                        writer.WriteLine(DateTime.Now);
+                        writer.WriteLine($"An error occured: {e.Message}");
+                        writer.WriteLine(e.StackTrace);
+                        writer.WriteLine("-----------");
+
+                        //Close writer
+                        writer.Close();
+                    }
                 }
             }
         }
@@ -166,6 +179,11 @@ namespace SomerenUI
         {
             // Call method to display panel Teachers
             ShowPanel("Teachers");
+        }
+
+        private void lbl_Dashboard_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

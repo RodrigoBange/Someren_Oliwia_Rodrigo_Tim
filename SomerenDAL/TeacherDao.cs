@@ -15,7 +15,7 @@ namespace SomerenDAL
         public List<Teacher> GetAllTeachers()
         {
             // Create query
-            string query = "SELECT Employee_Id, First_Name, Last_Name FROM TEACHER";
+            string query = "SELECT Employee_Id, First_Name, Last_Name, Supervises FROM TEACHER";
             SqlParameter[] sqlParameters = new SqlParameter[0];
 
             // Return result of query
@@ -37,7 +37,7 @@ namespace SomerenDAL
                         Number = (int)dr["Employee_Id"],
                         FirstName = (string)(dr["First_Name"].ToString()),
                         LastName = (string)(dr["Last_Name"].ToString()),
-                        //Supervises = (bool)(dr["Supervises"])
+                        Supervises = (bool)(dr["Supervises"])
                     };
                     // Add new Teacher object to list of Teachers
                     teachers.Add(teacher);
