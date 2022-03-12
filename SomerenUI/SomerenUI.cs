@@ -72,7 +72,7 @@ namespace SomerenUI
                     string filePath = Path.Combine(writePath, "Log.txt");
 
                     // Display message box when an error occured with the appropiate error
-                    MessageBox.Show("Something went wrong while loading the students: " + e.Message + Environment.NewLine 
+                    MessageBox.Show("Something went wrong while loading the students: " + e.Message + Environment.NewLine
                         + "Error log location: " + filePath);
 
                     using (StreamWriter writer = new StreamWriter(filePath, true)) //If file exists, add to it or create a new file
@@ -116,7 +116,6 @@ namespace SomerenUI
                         else { li.SubItems.Add("No"); }
                         listViewTeachers.Items.Add(li);
                     }
-
                 }
                 catch (Exception e)
                 {
@@ -125,7 +124,7 @@ namespace SomerenUI
                     string filePath = Path.Combine(writePath, "Log.txt");
 
                     // Display message box when an error occured with the appropiate error
-                    MessageBox.Show("Something went wrong while loading the teachers: " 
+                    MessageBox.Show("Something went wrong while loading the teachers: "
                         + e.Message + Environment.NewLine + "Error log location: " + filePath);
 
                     using (StreamWriter writer = new StreamWriter(filePath, true)) //If file exists, add to it or create a new file
@@ -140,6 +139,22 @@ namespace SomerenUI
                     }
                 }
             }
+            else if (panelName == "DrinkInventory" && !pnlDrinkInventory.Visible) // If the panelName is Teachers and is not visible...
+            {
+                // Hide all other panels
+                HideAllPanels();
+
+                // Show Teachers
+                pnlDrinkInventory.Show();
+            }
+            else if (panelName == "CashRegister" && !pnlCashRegister.Visible) // If the panelName is Teachers and is not visible...
+            {
+                // Hide all other panels
+                HideAllPanels();
+
+                // Show Teachers
+                pnlCashRegister.Show();
+            }
         }
 
         private void HideAllPanels()
@@ -149,6 +164,8 @@ namespace SomerenUI
             imgDashboard.Hide();
             pnlStudents.Hide();            
             pnlTeachers.Hide();
+            pnlDrinkInventory.Hide();
+            pnlCashRegister.Hide();
         }
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -181,9 +198,16 @@ namespace SomerenUI
             ShowPanel("Teachers");
         }
 
-        private void lbl_Dashboard_Click(object sender, EventArgs e)
+        private void DrinkInventoryToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            // Call method to display panel DrinkInventory
+            ShowPanel("DrinkInventory");
+        }
 
+        private void CashRegisterToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Call method to display panel CashRegister
+            ShowPanel("CashRegister");
         }
     }
 }
