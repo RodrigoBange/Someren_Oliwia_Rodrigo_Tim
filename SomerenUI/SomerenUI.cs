@@ -146,6 +146,51 @@ namespace SomerenUI
 
                 // Show Teachers
                 pnlDrinkInventory.Show();
+
+                try
+                {
+                    // fill the drinks listview within the drinks panel with a list of drinks
+                    DrinkService drinkService = new DrinkService();
+                    List<Drink> drinksList = drinkService.GetDrinks();
+
+                    // clear the listview ITEMS before filling it again !!Using list.Clear() will remove the column headers too.
+                    listViewDrinkInventory.Items.Clear();
+
+                    // For each Student object in the list, create a new List Item and fill details before adding it.
+                    foreach (Drink drink in drinksList)
+                    {
+                        ListViewItem li = new ListViewItem(drink.Number.ToString());
+                        li.SubItems.Add(drink.Name);
+                        li.SubItems.Add(drink.Price.ToString("€ 0.00"));
+                        if (drink.Type) { li.SubItems.Add("Alcholic"); } 
+                        else { li.SubItems.Add("Non-Alcoholic"); }
+                        li.SubItems.Add(drink.AmountSold.ToString());
+                        li.SubItems.Add(drink.Stock.ToString());
+                        if (drink.Stock >= 10) { li.SubItems.Add("Stock sufficient"); }
+                        else { li.SubItems.Add("Stock nearly depleted"); }
+                        listViewDrinkInventory.Items.Add(li);
+                    }
+                }
+                catch (Exception e)
+                {
+                    // Save error to text file
+                    string writePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+                    string filePath = Path.Combine(writePath, "Log.txt");
+
+                    // Display message box when an error occured with the appropiate error
+                    MessageBox.Show("Something went wrong while loading the drinks: " + e.Message + Environment.NewLine
+                        + "Error log location: " + filePath);
+
+                    using (StreamWriter writer = new StreamWriter(filePath, true)) //If file exists, add to it or create a new file
+                    {
+                        writer.WriteLine($"An error occured: {e.Message}");
+                        writer.WriteLine(e.StackTrace);
+                        writer.WriteLine("-----------");
+
+                        //Close writer
+                        writer.Close();
+                    }
+                }
             }
             else if (panelName == "CashRegister" && !pnlCashRegister.Visible) // If the panelName is Teachers and is not visible...
             {
@@ -208,6 +253,212 @@ namespace SomerenUI
         {
             // Call method to display panel CashRegister
             ShowPanel("CashRegister");
+        }
+
+        private void ListViewDrinkInventory_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Get selected item !!SelectedIndex is not a thing in winforms.
+            if (listViewDrinkInventory.SelectedItems.Count > 0)
+            {
+                // Get index 
+                int index = listViewDrinkInventory.Items.IndexOf(listViewDrinkInventory.SelectedItems[0]);
+
+                // Set variables to text boxes and combo box
+                txtBox_DrinkName.Text = listViewDrinkInventory.Items[index].SubItems[1].Text;
+                txtBox_DrinkPrice.Text = listViewDrinkInventory.Items[index].SubItems[2].Text.Substring(2);
+
+                if (listViewDrinkInventory.Items[index].SubItems[3].Text == "Alcholic")
+                {
+                    cBox_DrinkType.SelectedIndex = 1;
+                }
+                else { cBox_DrinkType.SelectedIndex = 0; }
+
+                txtBox_DrinkStock.Text = listViewDrinkInventory.Items[index].SubItems[5].Text;
+            }           
+        }
+
+        private void btn_AddDrink_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (txtBox_DrinkName.Text != "" && txtBox_DrinkPrice.Text != "" && 
+                    cBox_DrinkType.SelectedIndex > -1 && txtBox_DrinkStock.Text != "")
+                {
+                    //Create a new DrinkService object
+                    DrinkService drinkService = new DrinkService();
+
+                    // Get values from the textboxes
+                    string drinkName = txtBox_DrinkName.Text;
+                    decimal drinkPrice = decimal.Parse(txtBox_DrinkPrice.Text);
+                    int drinkStock = int.Parse(txtBox_DrinkStock.Text);
+                    bool drinkType;
+
+                    // Get value from combobox
+                    if (cBox_DrinkType.SelectedIndex == 0)
+                    {
+                        drinkType = false;
+                    }
+                    else { drinkType = true; }
+
+                    // Add drink
+                    drinkService.AddDrink(drinkName, drinkPrice, drinkStock, drinkType);
+
+                    // Refresh panel
+                    HideAllPanels();
+                    ShowPanel("DrinkInventory");
+
+                    // Clear text boxes (It doesn't clear with the panel refreshes)
+                    txtBox_DrinkName.Clear();
+                    txtBox_DrinkPrice.Clear();
+                    cBox_DrinkType.SelectedValue = -1;
+                    txtBox_DrinkStock.Clear();
+                }
+                else
+                {
+                    MessageBox.Show("Please enter appropiate values.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Save error to text file
+                string writePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+                string filePath = Path.Combine(writePath, "Log.txt");
+
+                // Display message box when an error occured with the appropiate error
+                MessageBox.Show("Something went wrong while adding the drink: " + ex.Message + Environment.NewLine
+                    + "Error log location: " + filePath);
+
+                using (StreamWriter writer = new StreamWriter(filePath, true)) //If file exists, add to it or create a new file
+                {
+                    writer.WriteLine($"An error occured: {ex.Message}");
+                    writer.WriteLine(ex.StackTrace);
+                    writer.WriteLine("-----------");
+
+                    //Close writer
+                    writer.Close();
+                }
+            }
+        }
+
+        private void btn_RemoveDrink_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Get selected item !!SelectedIndex is not a thing in winforms.
+                if (listViewDrinkInventory.SelectedItems.Count > 0)
+                {
+                    //Create a new DrinkService object
+                    DrinkService drinkService = new DrinkService();
+
+                    // Get index from selected item
+                    int index = listViewDrinkInventory.Items.IndexOf(listViewDrinkInventory.SelectedItems[0]);
+
+                    // Get values from selected item
+                    int drinkId = int.Parse(listViewDrinkInventory.Items[index].SubItems[0].Text);
+
+                    // Remove drink
+                    drinkService.RemoveDrink(drinkId);
+
+                    // Refresh panel
+                    HideAllPanels();
+                    ShowPanel("DrinkInventory");
+
+                    // Clear text boxes (It doesn't clear with the panel refreshes)
+                    txtBox_DrinkName.Clear();
+                    txtBox_DrinkPrice.Clear();
+                    cBox_DrinkType.SelectedValue = -1;
+                    txtBox_DrinkStock.Clear();
+                }
+                else
+                {
+                    MessageBox.Show("Please select an item to remove.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Save error to text file
+                string writePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+                string filePath = Path.Combine(writePath, "Log.txt");
+
+                // Display message box when an error occured with the appropiate error
+                MessageBox.Show("Something went wrong while removing the drink: " + ex.Message + Environment.NewLine
+                    + "Error log location: " + filePath);
+
+                using (StreamWriter writer = new StreamWriter(filePath, true)) //If file exists, add to it or create a new file
+                {
+                    writer.WriteLine($"An error occured: {ex.Message}");
+                    writer.WriteLine(ex.StackTrace);
+                    writer.WriteLine("-----------");
+
+                    //Close writer
+                    writer.Close();
+                }
+            }
+        }
+
+        private void btn_EditDrink_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Get selected item !!SelectedIndex is not a thing in winforms.
+                if (listViewDrinkInventory.SelectedItems.Count > 0)
+                {
+                    //Create a new DrinkService object
+                    DrinkService drinkService = new DrinkService();
+
+                    // Get index from selected item
+                    int index = listViewDrinkInventory.Items.IndexOf(listViewDrinkInventory.SelectedItems[0]);
+
+                    // Get values from selected item
+                    int drinkId = int.Parse(listViewDrinkInventory.Items[index].SubItems[0].Text);
+                    string drinkName = txtBox_DrinkName.Text;
+                    decimal drinkPrice = decimal.Parse(txtBox_DrinkPrice.Text);
+                    bool drinkType;
+                    if (cBox_DrinkType.SelectedIndex == 0) { drinkType = false; }
+                    else { drinkType = true; }
+                    int drinkStock = int.Parse(txtBox_DrinkStock.Text);                    
+
+                    // Edit drink values
+                    drinkService.EditDrink(drinkId, drinkName, drinkPrice, drinkType, drinkStock);
+
+                    // Refresh panel
+                    HideAllPanels();
+                    ShowPanel("DrinkInventory");
+
+                    // Clear text boxes (It doesn't clear with the panel refreshes)
+                    txtBox_DrinkName.Clear();
+                    txtBox_DrinkPrice.Clear();
+                    cBox_DrinkType.SelectedValue = -1;
+                    txtBox_DrinkStock.Clear();
+                }
+                else
+                {
+                    MessageBox.Show("Please select an item to edit.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Save error to text file
+                string writePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+                string filePath = Path.Combine(writePath, "Log.txt");
+
+                // Display message box when an error occured with the appropiate error
+                MessageBox.Show("Something went wrong while editing the drink: " + ex.Message + Environment.NewLine
+                    + "Error log location: " + filePath);
+
+                using (StreamWriter writer = new StreamWriter(filePath, true)) //If file exists, add to it or create a new file
+                {
+                    writer.WriteLine($"An error occured: {ex.Message}");
+                    writer.WriteLine(ex.StackTrace);
+                    writer.WriteLine("-----------");
+
+                    //Close writer
+                    writer.Close();
+                }
+            }
         }
     }
 }
