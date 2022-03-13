@@ -65,25 +65,14 @@ namespace SomerenUI
                         listViewStudents.Items.Add(li);
                     }
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    // Save error to text file
-                    string writePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-                    string filePath = Path.Combine(writePath, "Log.txt");
+                    // Write error to log and get file path
+                    string filePath = ErrorLogger.LogError(ex);
 
                     // Display message box when an error occured with the appropiate error
-                    MessageBox.Show("Something went wrong while loading the students: " + e.Message + Environment.NewLine
-                        + "Error log location: " + filePath);
-
-                    using (StreamWriter writer = new StreamWriter(filePath, true)) //If file exists, add to it or create a new file
-                    {
-                        writer.WriteLine($"An error occured: {e.Message}");
-                        writer.WriteLine(e.StackTrace);
-                        writer.WriteLine("-----------");
-
-                        //Close writer
-                        writer.Close();
-                    }
+                    MessageBox.Show("Something went wrong while loading the students: " + ex.Message + Environment.NewLine
+                        + Environment.NewLine + "Error log location: " + filePath);
                 }
             }
             else if (panelName == "Teachers" && !pnlTeachers.Visible) // If the panelName is Teachers and is not visible...
@@ -117,26 +106,14 @@ namespace SomerenUI
                         listViewTeachers.Items.Add(li);
                     }
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    // Save error to text file
-                    string writePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-                    string filePath = Path.Combine(writePath, "Log.txt");
+                    // Write error to log and get file path
+                    string filePath = ErrorLogger.LogError(ex);
 
                     // Display message box when an error occured with the appropiate error
                     MessageBox.Show("Something went wrong while loading the teachers: "
-                        + e.Message + Environment.NewLine + "Error log location: " + filePath);
-
-                    using (StreamWriter writer = new StreamWriter(filePath, true)) //If file exists, add to it or create a new file
-                    {
-                        writer.WriteLine(DateTime.Now);
-                        writer.WriteLine($"An error occured: {e.Message}");
-                        writer.WriteLine(e.StackTrace);
-                        writer.WriteLine("-----------");
-
-                        //Close writer
-                        writer.Close();
-                    }
+                        + ex.Message + Environment.NewLine + Environment.NewLine + "Error log location: " + filePath);
                 }
             }
             else if (panelName == "DrinkInventory" && !pnlDrinkInventory.Visible) // If the panelName is Teachers and is not visible...
@@ -162,7 +139,7 @@ namespace SomerenUI
                         ListViewItem li = new ListViewItem(drink.Number.ToString());
                         li.SubItems.Add(drink.Name);
                         li.SubItems.Add(drink.Price.ToString("€ 0.00"));
-                        if (drink.Type) { li.SubItems.Add("Alcholic"); } 
+                        if (drink.Type) { li.SubItems.Add("Alcoholic"); } 
                         else { li.SubItems.Add("Non-Alcoholic"); }
                         li.SubItems.Add(drink.AmountSold.ToString());
                         li.SubItems.Add(drink.Stock.ToString());
@@ -171,25 +148,14 @@ namespace SomerenUI
                         listViewDrinkInventory.Items.Add(li);
                     }
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    // Save error to text file
-                    string writePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-                    string filePath = Path.Combine(writePath, "Log.txt");
+                    // Write error to log and get file path
+                    string filePath = ErrorLogger.LogError(ex);
 
                     // Display message box when an error occured with the appropiate error
-                    MessageBox.Show("Something went wrong while loading the drinks: " + e.Message + Environment.NewLine
-                        + "Error log location: " + filePath);
-
-                    using (StreamWriter writer = new StreamWriter(filePath, true)) //If file exists, add to it or create a new file
-                    {
-                        writer.WriteLine($"An error occured: {e.Message}");
-                        writer.WriteLine(e.StackTrace);
-                        writer.WriteLine("-----------");
-
-                        //Close writer
-                        writer.Close();
-                    }
+                    MessageBox.Show("Something went wrong while loading the drinks: " + ex.Message + Environment.NewLine
+                        + Environment.NewLine + "Error log location: " + filePath);
                 }
             }
             else if (panelName == "CashRegister" && !pnlCashRegister.Visible) // If the panelName is Teachers and is not visible...
@@ -261,26 +227,23 @@ namespace SomerenUI
             if (listViewDrinkInventory.SelectedItems.Count > 0)
             {
                 // Get index 
-                int index = listViewDrinkInventory.Items.IndexOf(listViewDrinkInventory.SelectedItems[0]);
+                ListViewItem item = listViewDrinkInventory.SelectedItems[0];
 
                 // Set variables to text boxes and combo box
-                txtBox_DrinkName.Text = listViewDrinkInventory.Items[index].SubItems[1].Text;
-                txtBox_DrinkPrice.Text = listViewDrinkInventory.Items[index].SubItems[2].Text.Substring(2);
+                txtBox_DrinkName.Text = item.SubItems[1].Text;
+                txtBox_DrinkPrice.Text = item.SubItems[2].Text.Substring(2);
+                txtBox_DrinkStock.Text = item.SubItems[5].Text;
 
-                if (listViewDrinkInventory.Items[index].SubItems[3].Text == "Alcholic")
-                {
-                    cBox_DrinkType.SelectedIndex = 1;
-                }
+                if (item.SubItems[3].Text == "Alcoholic") { cBox_DrinkType.SelectedIndex = 1; }
                 else { cBox_DrinkType.SelectedIndex = 0; }
-
-                txtBox_DrinkStock.Text = listViewDrinkInventory.Items[index].SubItems[5].Text;
             }           
         }
 
-        private void btn_AddDrink_Click(object sender, EventArgs e)
+        private void Btn_AddDrink_Click(object sender, EventArgs e)
         {
             try
             {
+                // If all fields have values...
                 if (txtBox_DrinkName.Text != "" && txtBox_DrinkPrice.Text != "" && 
                     cBox_DrinkType.SelectedIndex > -1 && txtBox_DrinkStock.Text != "")
                 {
@@ -308,10 +271,7 @@ namespace SomerenUI
                     ShowPanel("DrinkInventory");
 
                     // Clear text boxes (It doesn't clear with the panel refreshes)
-                    txtBox_DrinkName.Clear();
-                    txtBox_DrinkPrice.Clear();
-                    cBox_DrinkType.SelectedValue = -1;
-                    txtBox_DrinkStock.Clear();
+                    ResetAllInput();
                 }
                 else
                 {
@@ -321,27 +281,16 @@ namespace SomerenUI
             }
             catch (Exception ex)
             {
-                // Save error to text file
-                string writePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-                string filePath = Path.Combine(writePath, "Log.txt");
+                // Write error to log and get file path
+                string filePath = ErrorLogger.LogError(ex);
 
                 // Display message box when an error occured with the appropiate error
                 MessageBox.Show("Something went wrong while adding the drink: " + ex.Message + Environment.NewLine
-                    + "Error log location: " + filePath);
-
-                using (StreamWriter writer = new StreamWriter(filePath, true)) //If file exists, add to it or create a new file
-                {
-                    writer.WriteLine($"An error occured: {ex.Message}");
-                    writer.WriteLine(ex.StackTrace);
-                    writer.WriteLine("-----------");
-
-                    //Close writer
-                    writer.Close();
-                }
+                    + Environment.NewLine + "Error log location: " + filePath);
             }
         }
 
-        private void btn_RemoveDrink_Click(object sender, EventArgs e)
+        private void Btn_RemoveDrink_Click(object sender, EventArgs e)
         {
             try
             {
@@ -351,11 +300,11 @@ namespace SomerenUI
                     //Create a new DrinkService object
                     DrinkService drinkService = new DrinkService();
 
-                    // Get index from selected item
-                    int index = listViewDrinkInventory.Items.IndexOf(listViewDrinkInventory.SelectedItems[0]);
+                    // Get index 
+                    ListViewItem item = listViewDrinkInventory.SelectedItems[0];
 
                     // Get values from selected item
-                    int drinkId = int.Parse(listViewDrinkInventory.Items[index].SubItems[0].Text);
+                    int drinkId = int.Parse(item.SubItems[0].Text);
 
                     // Remove drink
                     drinkService.RemoveDrink(drinkId);
@@ -365,10 +314,7 @@ namespace SomerenUI
                     ShowPanel("DrinkInventory");
 
                     // Clear text boxes (It doesn't clear with the panel refreshes)
-                    txtBox_DrinkName.Clear();
-                    txtBox_DrinkPrice.Clear();
-                    cBox_DrinkType.SelectedValue = -1;
-                    txtBox_DrinkStock.Clear();
+                    ResetAllInput();
                 }
                 else
                 {
@@ -378,27 +324,16 @@ namespace SomerenUI
             }
             catch (Exception ex)
             {
-                // Save error to text file
-                string writePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-                string filePath = Path.Combine(writePath, "Log.txt");
+                // Write error to log and get file path
+                string filePath = ErrorLogger.LogError(ex);
 
                 // Display message box when an error occured with the appropiate error
                 MessageBox.Show("Something went wrong while removing the drink: " + ex.Message + Environment.NewLine
-                    + "Error log location: " + filePath);
-
-                using (StreamWriter writer = new StreamWriter(filePath, true)) //If file exists, add to it or create a new file
-                {
-                    writer.WriteLine($"An error occured: {ex.Message}");
-                    writer.WriteLine(ex.StackTrace);
-                    writer.WriteLine("-----------");
-
-                    //Close writer
-                    writer.Close();
-                }
+                    + Environment.NewLine + "Error log location: " + filePath);
             }
         }
 
-        private void btn_EditDrink_Click(object sender, EventArgs e)
+        private void Btn_EditDrink_Click(object sender, EventArgs e)
         {
             try
             {
@@ -408,11 +343,11 @@ namespace SomerenUI
                     //Create a new DrinkService object
                     DrinkService drinkService = new DrinkService();
 
-                    // Get index from selected item
-                    int index = listViewDrinkInventory.Items.IndexOf(listViewDrinkInventory.SelectedItems[0]);
+                    // Get index 
+                    ListViewItem item = listViewDrinkInventory.SelectedItems[0];
 
                     // Get values from selected item
-                    int drinkId = int.Parse(listViewDrinkInventory.Items[index].SubItems[0].Text);
+                    int drinkId = int.Parse(item.SubItems[0].Text);
                     string drinkName = txtBox_DrinkName.Text;
                     decimal drinkPrice = decimal.Parse(txtBox_DrinkPrice.Text);
                     bool drinkType;
@@ -428,10 +363,7 @@ namespace SomerenUI
                     ShowPanel("DrinkInventory");
 
                     // Clear text boxes (It doesn't clear with the panel refreshes)
-                    txtBox_DrinkName.Clear();
-                    txtBox_DrinkPrice.Clear();
-                    cBox_DrinkType.SelectedValue = -1;
-                    txtBox_DrinkStock.Clear();
+                    ResetAllInput();
                 }
                 else
                 {
@@ -441,24 +373,22 @@ namespace SomerenUI
             }
             catch (Exception ex)
             {
-                // Save error to text file
-                string writePath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
-                string filePath = Path.Combine(writePath, "Log.txt");
+                // Write error to log and get file path
+                string filePath = ErrorLogger.LogError(ex);
 
                 // Display message box when an error occured with the appropiate error
                 MessageBox.Show("Something went wrong while editing the drink: " + ex.Message + Environment.NewLine
-                    + "Error log location: " + filePath);
-
-                using (StreamWriter writer = new StreamWriter(filePath, true)) //If file exists, add to it or create a new file
-                {
-                    writer.WriteLine($"An error occured: {ex.Message}");
-                    writer.WriteLine(ex.StackTrace);
-                    writer.WriteLine("-----------");
-
-                    //Close writer
-                    writer.Close();
-                }
+                    + Environment.NewLine + "Error log location: " + filePath);
             }
+        }
+
+        private void ResetAllInput()
+        {
+            // Clear text boxes -- Drink Inventory
+            txtBox_DrinkName.Clear();
+            txtBox_DrinkPrice.Clear();
+            cBox_DrinkType.SelectedValue = -1;
+            txtBox_DrinkStock.Clear();
         }
     }
 }
