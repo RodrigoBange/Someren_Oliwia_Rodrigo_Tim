@@ -9,6 +9,7 @@ namespace SomerenModel
 {
     public static class ErrorLogger
     {
+        // Constructor 
         public static string LogError(Exception ex)
         {
             // Get file path to save to Log.txt
