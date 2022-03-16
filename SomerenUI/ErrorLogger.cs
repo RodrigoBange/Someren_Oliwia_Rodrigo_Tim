@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace SomerenModel
+namespace SomerenUI
 {
     public static class ErrorLogger
     {
