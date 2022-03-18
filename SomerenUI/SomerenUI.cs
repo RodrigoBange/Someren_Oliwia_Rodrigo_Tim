@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.SqlClient;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -188,12 +189,13 @@ namespace SomerenUI
                         li.SubItems.Add(s.FirstName);
                         li.SubItems.Add(s.LastName);
                         li.SubItems.Add(s.BirthDate.ToString("yyyy-MM-dd"));
-                        listViewRegisterStudents.Items.Add(li);
+                        listViewRegisterStudents.Items.Add(li);                        
                     }
                     // For each Drink object in the list, create a new List Item and fill details before adding it.
                     foreach (Drink drink in drinksList)
                     {
-                        ListViewItem li = new ListViewItem(drink.Name);
+                        ListViewItem li = new ListViewItem(drink.Number.ToString());
+                        li.SubItems.Add(drink.Name);
                         li.SubItems.Add(drink.Price.ToString("€ 0.00"));
                         if (drink.Type) { li.SubItems.Add("Alcoholic"); }
                         else { li.SubItems.Add("Non-Alcoholic"); }
@@ -275,8 +277,11 @@ namespace SomerenUI
                 ListViewItem item = listViewRegisterDrinks.SelectedItems[0];
 
                 // Set variable to the label and enable the button
-                lbl_RegisterPrice.Text = item.SubItems[1].Text;
+                lbl_RegisterPrice.Text = item.SubItems[2].Text;
                 btn_Checkout.Enabled = true;
+                btn_StockMinus.Enabled = true;
+                btn_StockPlus.Enabled = true;
+                lbl_DrinksAmount.Text = "1";
             }
         }
         private void ListViewRegisterStudents_SelectedIndexChanged(object sender, EventArgs e)
@@ -288,7 +293,7 @@ namespace SomerenUI
                 ListViewItem item = listViewRegisterDrinks.SelectedItems[0];
 
                 // Set variable to the label and enable the button
-                lbl_RegisterPrice.Text = item.SubItems[1].Text;
+                lbl_RegisterPrice.Text = item.SubItems[2].Text;
                 btn_Checkout.Enabled = true;
             }
         }
@@ -309,28 +314,68 @@ namespace SomerenUI
                 else { cBox_DrinkType.SelectedIndex = 0; }
             }           
         }
-        private void btn_Checkout_Click(object sender, EventArgs e)
+
+        private void Btn_Checkout_Click(object sender, EventArgs e)
         {
             try
             {
-                //if()
-                CashRegister cashRegister = new CashRegister();
+                // If both lists have a value 
+                if (listViewRegisterStudents.SelectedItems.Count > 0 && listViewRegisterDrinks.SelectedItems.Count > 0)
+                {
+                    // Get the index of both lists
+                    ListViewItem itemStudent = listViewRegisterStudents.SelectedItems[0];
+                    ListViewItem itemDrink = listViewRegisterDrinks.SelectedItems[0];
 
-                int studentId = registerStudentId.Index;
-                //int drinkId = registerDrinkId.Index;
-                decimal paidAmount = registerDrinkPrice.Index;
-                //datetime purchaseDate = ???
+                    // Create new CashRegister object
+                    CashRegister cashRegister = new CashRegister
+                    {
+                        StudentNumber = int.Parse(itemStudent.SubItems[0].Text),
+                        DrinkNumber = int.Parse(itemDrink.SubItems[0].Text),
+                        PaidAmount = decimal.Parse(lbl_RegisterPrice.Text.Substring(2)),
+                        PurchaseDate = DateTime.Now,
+                        DrinksAmount = int.Parse(lbl_DrinksAmount.Text)
+                    };
 
-                // Add purchase
-                //CashRegisterService.AddPurchase(studentId, drinkId, paidAmount, purchaseDate);
+                    // If there is stock, continue with checkout
+                    if (int.Parse(itemDrink.SubItems[4].Text) != 0)
+                    {
+                        // Create new CashRegisterSerivce
+                        CashRegisterService cashRegisterService = new CashRegisterService();
 
-                // Refresh panel
-                HideAllPanels();
-                ShowPanel("CashRegister");
+                        // If purchase exists
+                        if (cashRegisterService.CheckPurchases(cashRegister.StudentNumber, cashRegister.DrinkNumber))
+                        {
+                            // Edit purchase
+                            cashRegisterService.UpdatePurchase(cashRegister);
+                        }
+                        else
+                        {
+                            // Add purchase
+                            cashRegisterService.AddPurchase(cashRegister);
+                        }
 
-                // Clear text boxes (It doesn't clear with the panel refreshes)
-                ResetAllInput();
+                        // Edit Stock
+                        DrinkService drinkService = new DrinkService();
+                        drinkService.UpdateStock(cashRegister.DrinkNumber, cashRegister.DrinksAmount);
 
+                        // Refresh panel
+                        HideAllPanels();
+                        ShowPanel("CashRegister");
+
+                        // Clear text boxes (It doesn't clear with the panel refreshes)
+                        ResetAllInput();
+                    }
+                    else
+                    {
+                        // Display message
+                        MessageBox.Show("Sorry, there is no stock. Please select a different drink.");
+                    }
+                }
+                else
+                {
+                    // Display message
+                    MessageBox.Show("Please select a student and a drink.");
+                }
             }
             catch (Exception ex)
             {
@@ -486,6 +531,55 @@ namespace SomerenUI
             }
         }
 
+        private void Btn_StockMinus_Click(object sender, EventArgs e)
+        {
+            // Get number from label
+            int counter = int.Parse(lbl_DrinksAmount.Text);
+
+            // If both lists have a value 
+            if (listViewRegisterStudents.SelectedItems.Count > 0 && listViewRegisterDrinks.SelectedItems.Count > 0)
+            {
+                // Get the index of drink list
+                ListViewItem itemDrink = listViewRegisterDrinks.SelectedItems[0];
+
+                // Get Price
+                decimal drinkPrice = decimal.Parse(itemDrink.SubItems[2].Text.Substring(2));
+
+                // Adjust the counter but never allow less than 1
+                if (counter <= 1) { counter = 1; }
+                else { counter--; }
+
+                // Add new number to label
+                lbl_RegisterPrice.Text = $"€ {(drinkPrice * counter)}";
+                lbl_DrinksAmount.Text = counter.ToString();
+            }
+        }
+
+        private void Btn_StockPlus_Click(object sender, EventArgs e)
+        {
+            // Get number from label
+            int counter = int.Parse(lbl_DrinksAmount.Text);
+
+            // If both lists have a value 
+            if (listViewRegisterStudents.SelectedItems.Count > 0 && listViewRegisterDrinks.SelectedItems.Count > 0)
+            {
+                // Get the index of drink list
+                ListViewItem itemDrink = listViewRegisterDrinks.SelectedItems[0];
+
+                // Get Stock Amount and Price
+                int stockAmount = int.Parse(itemDrink.SubItems[4].Text);
+                decimal drinkPrice = decimal.Parse(itemDrink.SubItems[2].Text.Substring(2));
+
+                // Adjust the counter but only up to and equal to the stock amount
+                if (counter >= stockAmount) { counter = stockAmount; }
+                else { counter++; }
+
+                // Update text labels
+                lbl_RegisterPrice.Text = $"€ {(drinkPrice * counter)}";
+                lbl_DrinksAmount.Text = counter.ToString();
+            }
+        }
+
         private void ResetAllInput()
         {
             // Clear text boxes -- Drink Inventory
@@ -493,6 +587,13 @@ namespace SomerenUI
             txtBox_DrinkPrice.Clear();
             cBox_DrinkType.SelectedValue = -1;
             txtBox_DrinkStock.Clear();
+
+            // Clear text and reset buttons to default -- Cash Register
+            btn_StockMinus.Enabled = false;
+            btn_StockPlus.Enabled = false;
+            btn_Checkout.Enabled = false;
+            lbl_RegisterPrice.Text = "€0.00";
+            lbl_DrinksAmount.Text = "0";
         }
     }
 }
