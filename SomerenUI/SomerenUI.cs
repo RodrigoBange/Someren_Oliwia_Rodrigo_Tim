@@ -158,13 +158,59 @@ namespace SomerenUI
                         + Environment.NewLine + "Error log location: " + filePath);
                 }
             }
-            else if (panelName == "CashRegister" && !pnlCashRegister.Visible) // If the panelName is Teachers and is not visible...
+            else if (panelName == "CashRegister" && !pnlCashRegister.Visible) // If the panelName is and is not visible...
             {
                 // Hide all other panels
                 HideAllPanels();
 
-                // Show Teachers
+                // Show 
                 pnlCashRegister.Show();
+
+                try
+                {
+                    // fill the register students listview within the Cash Register panel with a list of students
+                    StudentService studService = new StudentService();
+                    List<Student> studentList = studService.GetStudents();
+
+                    // fill the register drinks listview within the Cash Register panel with a list of drinks
+                    DrinkService drinkService = new DrinkService();
+                    List<Drink> drinksList = drinkService.GetDrinks();
+
+
+                    // clear the listview ITEMS before filling it again !!Using list.Clear() will remove the column headers too.
+                    listViewRegisterStudents.Items.Clear();
+                    listViewRegisterDrinks.Items.Clear();
+
+                    // For each Student object in the list, create a new List Item and fill details before adding it.
+                    foreach (Student s in studentList)
+                    {
+                        ListViewItem li = new ListViewItem(s.Number.ToString());
+                        li.SubItems.Add(s.FirstName);
+                        li.SubItems.Add(s.LastName);
+                        li.SubItems.Add(s.BirthDate.ToString("yyyy-MM-dd"));
+                        listViewRegisterStudents.Items.Add(li);
+                    }
+                    // For each Drink object in the list, create a new List Item and fill details before adding it.
+                    foreach (Drink drink in drinksList)
+                    {
+                        ListViewItem li = new ListViewItem(drink.Name);
+                        li.SubItems.Add(drink.Price.ToString("€ 0.00"));
+                        if (drink.Type) { li.SubItems.Add("Alcoholic"); }
+                        else { li.SubItems.Add("Non-Alcoholic"); }
+                        li.SubItems.Add(drink.Stock.ToString());
+                        listViewRegisterDrinks.Items.Add(li);
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    // Write error to log and get file path
+                    string filePath = ErrorLogger.LogError(ex);
+
+                    // Display message box when an error occured with the appropiate error
+                    MessageBox.Show("Something went wrong while loading the students or drinks: " + ex.Message + Environment.NewLine
+                        + Environment.NewLine + "Error log location: " + filePath);
+                }
             }
         }
 
@@ -220,7 +266,32 @@ namespace SomerenUI
             // Call method to display panel CashRegister
             ShowPanel("CashRegister");
         }
+        private void ListViewRegisterDrinks_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Get selected item !!SelectedIndex is not a thing in winforms.
+            if (listViewRegisterDrinks.SelectedItems.Count > 0 && listViewRegisterStudents.SelectedItems.Count > 0)
+            {
+                // Get index 
+                ListViewItem item = listViewRegisterDrinks.SelectedItems[0];
 
+                // Set variable to the label and enable the button
+                lbl_RegisterPrice.Text = item.SubItems[1].Text;
+                btn_Checkout.Enabled = true;
+            }
+        }
+        private void ListViewRegisterStudents_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Get selected item !!SelectedIndex is not a thing in winforms.
+            if (listViewRegisterStudents.SelectedItems.Count > 0 && listViewRegisterDrinks.SelectedItems.Count > 0)
+            {
+                // Get index 
+                ListViewItem item = listViewRegisterDrinks.SelectedItems[0];
+
+                // Set variable to the label and enable the button
+                lbl_RegisterPrice.Text = item.SubItems[1].Text;
+                btn_Checkout.Enabled = true;
+            }
+        }
         private void ListViewDrinkInventory_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Get selected item !!SelectedIndex is not a thing in winforms.
@@ -237,6 +308,39 @@ namespace SomerenUI
                 if (item.SubItems[3].Text == "Alcoholic") { cBox_DrinkType.SelectedIndex = 1; }
                 else { cBox_DrinkType.SelectedIndex = 0; }
             }           
+        }
+        private void btn_Checkout_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                //if()
+                CashRegister cashRegister = new CashRegister();
+
+                int studentId = registerStudentId.Index;
+                //int drinkId = registerDrinkId.Index;
+                decimal paidAmount = registerDrinkPrice.Index;
+                //datetime purchaseDate = ???
+
+                // Add purchase
+                //CashRegisterService.AddPurchase(studentId, drinkId, paidAmount, purchaseDate);
+
+                // Refresh panel
+                HideAllPanels();
+                ShowPanel("CashRegister");
+
+                // Clear text boxes (It doesn't clear with the panel refreshes)
+                ResetAllInput();
+
+            }
+            catch (Exception ex)
+            {
+                // Write error to log and get file path
+                string filePath = ErrorLogger.LogError(ex);
+
+                // Display message box when an error occured with the appropiate error
+                MessageBox.Show("Something went wrong while adding the purchase: " + ex.Message + Environment.NewLine
+                    + Environment.NewLine + "Error log location: " + filePath);
+            }
         }
 
         private void Btn_AddDrink_Click(object sender, EventArgs e)
