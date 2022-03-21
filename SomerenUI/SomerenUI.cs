@@ -28,22 +28,20 @@ namespace SomerenUI
             ShowPanel("Dashboard");
         }
 
+        /* PANEL BEHAVIOURS */
         private void ShowPanel(string panelName)
         {
+            // Hide all other panels before loading new panel
+            HideAllPanels();
+
             if (panelName == "Dashboard") // If the panelName is Dashboard...
             {
-                // Hide all other panels
-                HideAllPanels();
-
                 // Show Dashboard
                 pnlDashboard.Show();
                 imgDashboard.Show();
             }
             else if (panelName == "Students" && !pnlStudents.Visible) // If the panelName is Students and is not visible...
             {
-                // Hide all other panels
-                HideAllPanels();
-
                 // Show Students
                 pnlStudents.Show();
 
@@ -78,9 +76,6 @@ namespace SomerenUI
             }
             else if (panelName == "Teachers" && !pnlTeachers.Visible) // If the panelName is Teachers and is not visible...
             {
-                // Hide all other panels
-                HideAllPanels();
-
                 // Show Teachers
                 pnlTeachers.Show();
 
@@ -119,9 +114,6 @@ namespace SomerenUI
             }
             else if (panelName == "DrinkInventory" && !pnlDrinkInventory.Visible) // If the panelName is Teachers and is not visible...
             {
-                // Hide all other panels
-                HideAllPanels();
-
                 // Show Teachers
                 pnlDrinkInventory.Show();
 
@@ -161,9 +153,6 @@ namespace SomerenUI
             }
             else if (panelName == "CashRegister" && !pnlCashRegister.Visible) // If the panelName is and is not visible...
             {
-                // Hide all other panels
-                HideAllPanels();
-
                 // Show 
                 pnlCashRegister.Show();
 
@@ -214,6 +203,25 @@ namespace SomerenUI
                         + Environment.NewLine + "Error log location: " + filePath);
                 }
             }
+            else if (panelName == "Activities" && !pnlActivities.Visible)
+            {
+                // Show activities
+                pnlActivities.Show();
+
+                try
+                {
+
+                }
+                catch (Exception ex)
+                {
+                    // Write error to log and get file path
+                    string filePath = ErrorLogger.LogError(ex);
+
+                    // Display message box when an error occured with the appropiate error
+                    MessageBox.Show("Something went wrong while loading the activies: " + ex.Message + Environment.NewLine
+                        + Environment.NewLine + "Error log location: " + filePath);
+                }
+            }
         }
 
         private void HideAllPanels()
@@ -225,8 +233,10 @@ namespace SomerenUI
             pnlTeachers.Hide();
             pnlDrinkInventory.Hide();
             pnlCashRegister.Hide();
+            pnlActivities.Hide();
         }
 
+        /* ALL TOOLTIP MENU ITEM METHODS */
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // Exit the application
@@ -268,6 +278,14 @@ namespace SomerenUI
             // Call method to display panel CashRegister
             ShowPanel("CashRegister");
         }
+
+        private void ActivitiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Call method to display panel Activities
+            ShowPanel("Activities");
+        }
+
+        /* LISTVIEW BEHAVIOURS */
         private void ListViewRegisterDrinks_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Get selected item !!SelectedIndex is not a thing in winforms.
@@ -315,6 +333,7 @@ namespace SomerenUI
             }           
         }
 
+        /* BUTTON BEHAVIOURS */
         private void Btn_Checkout_Click(object sender, EventArgs e)
         {
             try
@@ -580,6 +599,7 @@ namespace SomerenUI
             }
         }
 
+        /* RESET ALL INPUT METHOD */
         private void ResetAllInput()
         {
             // Clear text boxes -- Drink Inventory
