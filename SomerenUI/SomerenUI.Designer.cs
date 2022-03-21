@@ -38,6 +38,7 @@
             this.studentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lecturersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.activitiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.supervisorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.roomsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stockManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.drinkInventoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -104,8 +105,8 @@
             this.registerStudentDOB = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.imgRegister = new System.Windows.Forms.PictureBox();
             this.lbl_CashRegister = new System.Windows.Forms.Label();
-            this.supervisorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlActivities = new System.Windows.Forms.Panel();
+            this.txtBox_ActivityEndDate = new System.Windows.Forms.TextBox();
             this.lbl_ActivityEndDate = new System.Windows.Forms.Label();
             this.lbl_ActivityStartDate = new System.Windows.Forms.Label();
             this.lbl_ActivityDescription = new System.Windows.Forms.Label();
@@ -124,7 +125,23 @@
             this.activityEndDate = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.imgActivities = new System.Windows.Forms.PictureBox();
             this.lbl_Activities = new System.Windows.Forms.Label();
-            this.txtBox_ActivityEndDate = new System.Windows.Forms.TextBox();
+            this.pnlSupervisors = new System.Windows.Forms.Panel();
+            this.lbl_NonSupervisors = new System.Windows.Forms.Label();
+            this.lbl_ActivitySupervisors = new System.Windows.Forms.Label();
+            this.listViewActivitiesNonSupervisors = new System.Windows.Forms.ListView();
+            this.nonSupervisorId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.nonSupervisorName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.listViewActivitySupervisors = new System.Windows.Forms.ListView();
+            this.supervisorId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.supervisorName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.lbl_SupervisorActivities = new System.Windows.Forms.Label();
+            this.btn_AddSupervisor = new System.Windows.Forms.Button();
+            this.btn_RemoveSupervisor = new System.Windows.Forms.Button();
+            this.listViewSupervisorActivities = new System.Windows.Forms.ListView();
+            this.supervisorActivityId = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.supervisorActivityName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.imgSupervisors = new System.Windows.Forms.PictureBox();
+            this.lbl_Supervisors = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imgDashboard)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.pnlDashboard.SuspendLayout();
@@ -138,6 +155,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.imgRegister)).BeginInit();
             this.pnlActivities.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgActivities)).BeginInit();
+            this.pnlSupervisors.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imgSupervisors)).BeginInit();
             this.SuspendLayout();
             // 
             // imgDashboard
@@ -155,7 +174,6 @@
             // 
             // menuStrip1
             // 
-            this.menuStrip1.GripMargin = new System.Windows.Forms.Padding(2, 2, 0, 2);
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(24, 24);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.dashboardToolStripMenuItem,
@@ -167,7 +185,7 @@
             this.stockManagementToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1443, 33);
+            this.menuStrip1.Size = new System.Drawing.Size(1443, 36);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -178,54 +196,61 @@
             this.toolStripSeparator1,
             this.exitToolStripMenuItem});
             this.dashboardToolStripMenuItem.Name = "dashboardToolStripMenuItem";
-            this.dashboardToolStripMenuItem.Size = new System.Drawing.Size(118, 29);
+            this.dashboardToolStripMenuItem.Size = new System.Drawing.Size(118, 30);
             this.dashboardToolStripMenuItem.Text = "Application";
             // 
             // dashboardToolStripMenuItem1
             // 
             this.dashboardToolStripMenuItem1.Name = "dashboardToolStripMenuItem1";
-            this.dashboardToolStripMenuItem1.Size = new System.Drawing.Size(270, 34);
+            this.dashboardToolStripMenuItem1.Size = new System.Drawing.Size(202, 34);
             this.dashboardToolStripMenuItem1.Text = "Dashboard";
             this.dashboardToolStripMenuItem1.Click += new System.EventHandler(this.DashboardToolStripMenuItem1_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(267, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(199, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(202, 34);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
             // studentsToolStripMenuItem
             // 
             this.studentsToolStripMenuItem.Name = "studentsToolStripMenuItem";
-            this.studentsToolStripMenuItem.Size = new System.Drawing.Size(97, 29);
+            this.studentsToolStripMenuItem.Size = new System.Drawing.Size(97, 30);
             this.studentsToolStripMenuItem.Text = "Students";
             this.studentsToolStripMenuItem.Click += new System.EventHandler(this.StudentsToolStripMenuItem_Click);
             // 
             // lecturersToolStripMenuItem
             // 
             this.lecturersToolStripMenuItem.Name = "lecturersToolStripMenuItem";
-            this.lecturersToolStripMenuItem.Size = new System.Drawing.Size(98, 29);
+            this.lecturersToolStripMenuItem.Size = new System.Drawing.Size(98, 30);
             this.lecturersToolStripMenuItem.Text = "Lecturers";
             this.lecturersToolStripMenuItem.Click += new System.EventHandler(this.LecturersToolStripMenuItem_Click);
             // 
             // activitiesToolStripMenuItem
             // 
             this.activitiesToolStripMenuItem.Name = "activitiesToolStripMenuItem";
-            this.activitiesToolStripMenuItem.Size = new System.Drawing.Size(98, 29);
+            this.activitiesToolStripMenuItem.Size = new System.Drawing.Size(98, 30);
             this.activitiesToolStripMenuItem.Text = "Activities";
             this.activitiesToolStripMenuItem.Click += new System.EventHandler(this.ActivitiesToolStripMenuItem_Click);
+            // 
+            // supervisorsToolStripMenuItem
+            // 
+            this.supervisorsToolStripMenuItem.Name = "supervisorsToolStripMenuItem";
+            this.supervisorsToolStripMenuItem.Size = new System.Drawing.Size(183, 30);
+            this.supervisorsToolStripMenuItem.Text = "Activity Supervisors";
+            this.supervisorsToolStripMenuItem.Click += new System.EventHandler(this.SupervisorsToolStripMenuItem_Click);
             // 
             // roomsToolStripMenuItem
             // 
             this.roomsToolStripMenuItem.Enabled = false;
             this.roomsToolStripMenuItem.Name = "roomsToolStripMenuItem";
-            this.roomsToolStripMenuItem.Size = new System.Drawing.Size(84, 29);
+            this.roomsToolStripMenuItem.Size = new System.Drawing.Size(84, 30);
             this.roomsToolStripMenuItem.Text = "Rooms";
             // 
             // stockManagementToolStripMenuItem
@@ -234,20 +259,20 @@
             this.drinkInventoryToolStripMenuItem,
             this.cashRegisterToolStripMenuItem});
             this.stockManagementToolStripMenuItem.Name = "stockManagementToolStripMenuItem";
-            this.stockManagementToolStripMenuItem.Size = new System.Drawing.Size(181, 29);
+            this.stockManagementToolStripMenuItem.Size = new System.Drawing.Size(181, 30);
             this.stockManagementToolStripMenuItem.Text = "Stock Management";
             // 
             // drinkInventoryToolStripMenuItem
             // 
             this.drinkInventoryToolStripMenuItem.Name = "drinkInventoryToolStripMenuItem";
-            this.drinkInventoryToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.drinkInventoryToolStripMenuItem.Size = new System.Drawing.Size(236, 34);
             this.drinkInventoryToolStripMenuItem.Text = "Drink Inventory";
             this.drinkInventoryToolStripMenuItem.Click += new System.EventHandler(this.DrinkInventoryToolStripMenuItem_Click);
             // 
             // cashRegisterToolStripMenuItem
             // 
             this.cashRegisterToolStripMenuItem.Name = "cashRegisterToolStripMenuItem";
-            this.cashRegisterToolStripMenuItem.Size = new System.Drawing.Size(270, 34);
+            this.cashRegisterToolStripMenuItem.Size = new System.Drawing.Size(236, 34);
             this.cashRegisterToolStripMenuItem.Text = "Cash Register";
             this.cashRegisterToolStripMenuItem.Click += new System.EventHandler(this.CashRegisterToolStripMenuItem_Click);
             // 
@@ -845,12 +870,6 @@
             this.lbl_CashRegister.TabIndex = 3;
             this.lbl_CashRegister.Text = "Cash Register";
             // 
-            // supervisorsToolStripMenuItem
-            // 
-            this.supervisorsToolStripMenuItem.Name = "supervisorsToolStripMenuItem";
-            this.supervisorsToolStripMenuItem.Size = new System.Drawing.Size(183, 29);
-            this.supervisorsToolStripMenuItem.Text = "Activity Supervisors";
-            // 
             // pnlActivities
             // 
             this.pnlActivities.Controls.Add(this.txtBox_ActivityEndDate);
@@ -872,6 +891,13 @@
             this.pnlActivities.Name = "pnlActivities";
             this.pnlActivities.Size = new System.Drawing.Size(1407, 717);
             this.pnlActivities.TabIndex = 8;
+            // 
+            // txtBox_ActivityEndDate
+            // 
+            this.txtBox_ActivityEndDate.Location = new System.Drawing.Point(599, 592);
+            this.txtBox_ActivityEndDate.Name = "txtBox_ActivityEndDate";
+            this.txtBox_ActivityEndDate.Size = new System.Drawing.Size(160, 26);
+            this.txtBox_ActivityEndDate.TabIndex = 17;
             // 
             // lbl_ActivityEndDate
             // 
@@ -1030,12 +1056,183 @@
             this.lbl_Activities.TabIndex = 3;
             this.lbl_Activities.Text = "Activities";
             // 
-            // txtBox_ActivityEndDate
+            // pnlSupervisors
             // 
-            this.txtBox_ActivityEndDate.Location = new System.Drawing.Point(599, 592);
-            this.txtBox_ActivityEndDate.Name = "txtBox_ActivityEndDate";
-            this.txtBox_ActivityEndDate.Size = new System.Drawing.Size(160, 26);
-            this.txtBox_ActivityEndDate.TabIndex = 17;
+            this.pnlSupervisors.Controls.Add(this.lbl_NonSupervisors);
+            this.pnlSupervisors.Controls.Add(this.lbl_ActivitySupervisors);
+            this.pnlSupervisors.Controls.Add(this.listViewActivitiesNonSupervisors);
+            this.pnlSupervisors.Controls.Add(this.listViewActivitySupervisors);
+            this.pnlSupervisors.Controls.Add(this.lbl_SupervisorActivities);
+            this.pnlSupervisors.Controls.Add(this.btn_AddSupervisor);
+            this.pnlSupervisors.Controls.Add(this.btn_RemoveSupervisor);
+            this.pnlSupervisors.Controls.Add(this.listViewSupervisorActivities);
+            this.pnlSupervisors.Controls.Add(this.imgSupervisors);
+            this.pnlSupervisors.Controls.Add(this.lbl_Supervisors);
+            this.pnlSupervisors.Location = new System.Drawing.Point(18, 42);
+            this.pnlSupervisors.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.pnlSupervisors.Name = "pnlSupervisors";
+            this.pnlSupervisors.Size = new System.Drawing.Size(1407, 717);
+            this.pnlSupervisors.TabIndex = 9;
+            // 
+            // lbl_NonSupervisors
+            // 
+            this.lbl_NonSupervisors.AutoSize = true;
+            this.lbl_NonSupervisors.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_NonSupervisors.ForeColor = System.Drawing.Color.White;
+            this.lbl_NonSupervisors.Location = new System.Drawing.Point(745, 61);
+            this.lbl_NonSupervisors.Name = "lbl_NonSupervisors";
+            this.lbl_NonSupervisors.Size = new System.Drawing.Size(287, 29);
+            this.lbl_NonSupervisors.TabIndex = 15;
+            this.lbl_NonSupervisors.Text = "Non-supervising teachers";
+            // 
+            // lbl_ActivitySupervisors
+            // 
+            this.lbl_ActivitySupervisors.AutoSize = true;
+            this.lbl_ActivitySupervisors.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_ActivitySupervisors.ForeColor = System.Drawing.Color.White;
+            this.lbl_ActivitySupervisors.Location = new System.Drawing.Point(380, 61);
+            this.lbl_ActivitySupervisors.Name = "lbl_ActivitySupervisors";
+            this.lbl_ActivitySupervisors.Size = new System.Drawing.Size(238, 29);
+            this.lbl_ActivitySupervisors.TabIndex = 14;
+            this.lbl_ActivitySupervisors.Text = "Supervising teachers";
+            // 
+            // listViewActivitiesNonSupervisors
+            // 
+            this.listViewActivitiesNonSupervisors.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(47)))), ((int)(((byte)(92)))));
+            this.listViewActivitiesNonSupervisors.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.nonSupervisorId,
+            this.nonSupervisorName});
+            this.listViewActivitiesNonSupervisors.ForeColor = System.Drawing.Color.White;
+            this.listViewActivitiesNonSupervisors.FullRowSelect = true;
+            this.listViewActivitiesNonSupervisors.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listViewActivitiesNonSupervisors.HideSelection = false;
+            this.listViewActivitiesNonSupervisors.Location = new System.Drawing.Point(750, 100);
+            this.listViewActivitiesNonSupervisors.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.listViewActivitiesNonSupervisors.MultiSelect = false;
+            this.listViewActivitiesNonSupervisors.Name = "listViewActivitiesNonSupervisors";
+            this.listViewActivitiesNonSupervisors.Size = new System.Drawing.Size(300, 470);
+            this.listViewActivitiesNonSupervisors.TabIndex = 13;
+            this.listViewActivitiesNonSupervisors.UseCompatibleStateImageBehavior = false;
+            this.listViewActivitiesNonSupervisors.View = System.Windows.Forms.View.Details;
+            // 
+            // nonSupervisorId
+            // 
+            this.nonSupervisorId.Text = "Id";
+            // 
+            // nonSupervisorName
+            // 
+            this.nonSupervisorName.Text = "Name";
+            this.nonSupervisorName.Width = 160;
+            // 
+            // listViewActivitySupervisors
+            // 
+            this.listViewActivitySupervisors.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(47)))), ((int)(((byte)(92)))));
+            this.listViewActivitySupervisors.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.supervisorId,
+            this.supervisorName});
+            this.listViewActivitySupervisors.ForeColor = System.Drawing.Color.White;
+            this.listViewActivitySupervisors.FullRowSelect = true;
+            this.listViewActivitySupervisors.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listViewActivitySupervisors.HideSelection = false;
+            this.listViewActivitySupervisors.Location = new System.Drawing.Point(384, 100);
+            this.listViewActivitySupervisors.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.listViewActivitySupervisors.MultiSelect = false;
+            this.listViewActivitySupervisors.Name = "listViewActivitySupervisors";
+            this.listViewActivitySupervisors.Size = new System.Drawing.Size(300, 470);
+            this.listViewActivitySupervisors.TabIndex = 12;
+            this.listViewActivitySupervisors.UseCompatibleStateImageBehavior = false;
+            this.listViewActivitySupervisors.View = System.Windows.Forms.View.Details;
+            // 
+            // supervisorId
+            // 
+            this.supervisorId.Text = "Id";
+            // 
+            // supervisorName
+            // 
+            this.supervisorName.Text = "Name";
+            this.supervisorName.Width = 160;
+            // 
+            // lbl_SupervisorActivities
+            // 
+            this.lbl_SupervisorActivities.AutoSize = true;
+            this.lbl_SupervisorActivities.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_SupervisorActivities.ForeColor = System.Drawing.Color.White;
+            this.lbl_SupervisorActivities.Location = new System.Drawing.Point(22, 61);
+            this.lbl_SupervisorActivities.Name = "lbl_SupervisorActivities";
+            this.lbl_SupervisorActivities.Size = new System.Drawing.Size(190, 29);
+            this.lbl_SupervisorActivities.TabIndex = 11;
+            this.lbl_SupervisorActivities.Text = "Select an activity";
+            // 
+            // btn_AddSupervisor
+            // 
+            this.btn_AddSupervisor.Enabled = false;
+            this.btn_AddSupervisor.Location = new System.Drawing.Point(750, 590);
+            this.btn_AddSupervisor.Name = "btn_AddSupervisor";
+            this.btn_AddSupervisor.Size = new System.Drawing.Size(300, 35);
+            this.btn_AddSupervisor.TabIndex = 7;
+            this.btn_AddSupervisor.Text = "Add Teacher To Supervise";
+            this.btn_AddSupervisor.UseVisualStyleBackColor = true;
+            // 
+            // btn_RemoveSupervisor
+            // 
+            this.btn_RemoveSupervisor.Enabled = false;
+            this.btn_RemoveSupervisor.Location = new System.Drawing.Point(385, 590);
+            this.btn_RemoveSupervisor.Name = "btn_RemoveSupervisor";
+            this.btn_RemoveSupervisor.Size = new System.Drawing.Size(299, 35);
+            this.btn_RemoveSupervisor.TabIndex = 6;
+            this.btn_RemoveSupervisor.Text = "Remove Teacher From Supervising";
+            this.btn_RemoveSupervisor.UseVisualStyleBackColor = true;
+            // 
+            // listViewSupervisorActivities
+            // 
+            this.listViewSupervisorActivities.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(28)))), ((int)(((byte)(47)))), ((int)(((byte)(92)))));
+            this.listViewSupervisorActivities.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.supervisorActivityId,
+            this.supervisorActivityName});
+            this.listViewSupervisorActivities.ForeColor = System.Drawing.Color.White;
+            this.listViewSupervisorActivities.FullRowSelect = true;
+            this.listViewSupervisorActivities.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.listViewSupervisorActivities.HideSelection = false;
+            this.listViewSupervisorActivities.Location = new System.Drawing.Point(24, 97);
+            this.listViewSupervisorActivities.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.listViewSupervisorActivities.MultiSelect = false;
+            this.listViewSupervisorActivities.Name = "listViewSupervisorActivities";
+            this.listViewSupervisorActivities.Size = new System.Drawing.Size(300, 470);
+            this.listViewSupervisorActivities.TabIndex = 5;
+            this.listViewSupervisorActivities.UseCompatibleStateImageBehavior = false;
+            this.listViewSupervisorActivities.View = System.Windows.Forms.View.Details;
+            // 
+            // supervisorActivityId
+            // 
+            this.supervisorActivityId.Text = "Id";
+            // 
+            // supervisorActivityName
+            // 
+            this.supervisorActivityName.Text = "Name";
+            this.supervisorActivityName.Width = 160;
+            // 
+            // imgSupervisors
+            // 
+            this.imgSupervisors.Image = global::SomerenUI.Properties.Resources.someren;
+            this.imgSupervisors.InitialImage = ((System.Drawing.Image)(resources.GetObject("imgSupervisors.InitialImage")));
+            this.imgSupervisors.Location = new System.Drawing.Point(1208, 65);
+            this.imgSupervisors.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.imgSupervisors.Name = "imgSupervisors";
+            this.imgSupervisors.Size = new System.Drawing.Size(195, 189);
+            this.imgSupervisors.TabIndex = 0;
+            this.imgSupervisors.TabStop = false;
+            // 
+            // lbl_Supervisors
+            // 
+            this.lbl_Supervisors.AutoSize = true;
+            this.lbl_Supervisors.Font = new System.Drawing.Font("Microsoft Sans Serif", 17F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_Supervisors.ForeColor = System.Drawing.Color.White;
+            this.lbl_Supervisors.Location = new System.Drawing.Point(15, 15);
+            this.lbl_Supervisors.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbl_Supervisors.Name = "lbl_Supervisors";
+            this.lbl_Supervisors.Size = new System.Drawing.Size(197, 39);
+            this.lbl_Supervisors.TabIndex = 3;
+            this.lbl_Supervisors.Text = "Supervisors";
             // 
             // SomerenUI
             // 
@@ -1043,11 +1240,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(20)))), ((int)(((byte)(48)))));
             this.ClientSize = new System.Drawing.Size(1443, 777);
-            this.Controls.Add(this.pnlActivities);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.pnlDashboard);
             this.Controls.Add(this.pnlStudents);
             this.Controls.Add(this.pnlTeachers);
+            this.Controls.Add(this.pnlActivities);
+            this.Controls.Add(this.pnlSupervisors);
             this.Controls.Add(this.pnlDrinkInventory);
             this.Controls.Add(this.pnlCashRegister);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -1077,6 +1275,9 @@
             this.pnlActivities.ResumeLayout(false);
             this.pnlActivities.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgActivities)).EndInit();
+            this.pnlSupervisors.ResumeLayout(false);
+            this.pnlSupervisors.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imgSupervisors)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1180,6 +1381,23 @@
         private System.Windows.Forms.ColumnHeader activityEndDate;
         private System.Windows.Forms.PictureBox imgActivities;
         private System.Windows.Forms.Label lbl_Activities;
+        private System.Windows.Forms.Panel pnlSupervisors;
+        private System.Windows.Forms.Label lbl_NonSupervisors;
+        private System.Windows.Forms.Label lbl_ActivitySupervisors;
+        private System.Windows.Forms.ListView listViewActivitiesNonSupervisors;
+        private System.Windows.Forms.ColumnHeader nonSupervisorId;
+        private System.Windows.Forms.ColumnHeader nonSupervisorName;
+        private System.Windows.Forms.ListView listViewActivitySupervisors;
+        private System.Windows.Forms.ColumnHeader supervisorId;
+        private System.Windows.Forms.ColumnHeader supervisorName;
+        private System.Windows.Forms.Label lbl_SupervisorActivities;
+        private System.Windows.Forms.Button btn_AddSupervisor;
+        private System.Windows.Forms.Button btn_RemoveSupervisor;
+        private System.Windows.Forms.ListView listViewSupervisorActivities;
+        private System.Windows.Forms.ColumnHeader supervisorActivityId;
+        private System.Windows.Forms.ColumnHeader supervisorActivityName;
+        private System.Windows.Forms.PictureBox imgSupervisors;
+        private System.Windows.Forms.Label lbl_Supervisors;
     }
 }
 

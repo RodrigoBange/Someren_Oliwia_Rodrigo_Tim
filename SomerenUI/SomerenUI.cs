@@ -222,6 +222,25 @@ namespace SomerenUI
                         + Environment.NewLine + "Error log location: " + filePath);
                 }
             }
+            else if (panelName == "Supervisors" && !pnlSupervisors.Visible)
+            {
+                // Show supervisors
+                pnlSupervisors.Show();
+
+                try
+                {
+
+                }
+                catch (Exception ex)
+                {
+                    // Write error to log and get file path
+                    string filePath = ErrorLogger.LogError(ex);
+
+                    // Display message box when an error occured with the appropiate error
+                    MessageBox.Show("Something went wrong while loading the activies: " + ex.Message + Environment.NewLine
+                        + Environment.NewLine + "Error log location: " + filePath);
+                }
+            }
         }
 
         private void HideAllPanels()
@@ -234,6 +253,7 @@ namespace SomerenUI
             pnlDrinkInventory.Hide();
             pnlCashRegister.Hide();
             pnlActivities.Hide();
+            pnlSupervisors.Hide();
         }
 
         /* ALL TOOLTIP MENU ITEM METHODS */
@@ -283,6 +303,12 @@ namespace SomerenUI
         {
             // Call method to display panel Activities
             ShowPanel("Activities");
+        }
+
+        private void SupervisorsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Call method to display panel Supervisors
+            ShowPanel("Supervisors");
         }
 
         /* LISTVIEW BEHAVIOURS */
