@@ -654,8 +654,8 @@ namespace SomerenUI
                     // Get values from the textboxes
                     string activityName = txtBox_ActivityName.Text;
                     string description = txtBox_ActivityDescription.Text;
-                    DateTime startDate = DateTime.ParseExact(txtBox_ActivityStartDate.Text, "dd-MM-yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-                    DateTime endDate = DateTime.ParseExact(txtBox_ActivityEndDate.Text, "dd-MM-yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                    DateTime startDate = DateTime.ParseExact(txtBox_ActivityStartDate.Text, "dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                    DateTime endDate = DateTime.ParseExact(txtBox_ActivityEndDate.Text, "dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
 
                     // Add activity
                     activityService.AddActivity(activityName, description, startDate, endDate);
