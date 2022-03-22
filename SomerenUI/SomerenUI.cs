@@ -790,6 +790,12 @@ namespace SomerenUI
             btn_Checkout.Enabled = false;
             lbl_RegisterPrice.Text = "€0.00";
             lbl_DrinksAmount.Text = "0";
+
+            // Clear text boxes -- Activity
+            txtBox_ActivityName.Clear();
+            txtBox_ActivityDescription.Clear();
+            txtBox_ActivityStartDate.Clear();
+            txtBox_ActivityEndDate.Clear();
         }
     }
 }
