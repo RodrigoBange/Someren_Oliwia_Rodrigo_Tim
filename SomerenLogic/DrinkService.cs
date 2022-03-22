@@ -15,7 +15,7 @@ namespace SomerenLogic
         // Constructor
         public DrinkService()
         {
-            // Create new StudentDAO object
+            // Create new DrinkDAO object
             drinkdb = new DrinkDao();
         }
 

@@ -210,7 +210,23 @@ namespace SomerenUI
 
                 try
                 {
+                    // fill the activity listview within the activities panel with a list of activities
+                    ActivityService activityService = new ActivityService();
+                    List<Activity> activityList = activityService.GetActivities();
 
+                    // clear the listview ITEMS before filling it again !!Using list.Clear() will remove the column headers too.
+                    listViewActivities.Items.Clear();
+
+                    // For each Student object in the list, create a new List Item and fill details before adding it.
+                    foreach (Activity activity in activityList)
+                    {
+                        ListViewItem li = new ListViewItem(activity.Number.ToString());
+                        li.SubItems.Add(activity.Name);
+                        li.SubItems.Add(activity.Description);
+                        li.SubItems.Add(activity.StartDate.ToString("dd/MM/yyyy HH:mm:ss"));
+                        li.SubItems.Add(activity.EndDate.ToString("dd/MM/yyyy HH:mm:ss"));
+                        listViewActivities.Items.Add(li);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -622,6 +638,140 @@ namespace SomerenUI
                 // Update text labels
                 lbl_RegisterPrice.Text = $"€ {(drinkPrice * counter)}";
                 lbl_DrinksAmount.Text = counter.ToString();
+            }
+        }
+        private void Btn_AddActivity_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // If all fields have values...
+                if (txtBox_ActivityName.Text != "" && txtBox_ActivityDescription.Text != "" &&
+                    txtBox_ActivityStartDate.Text != "" && txtBox_ActivityEndDate.Text != "")
+                {
+                    //Create a new ActivityService object
+                    ActivityService activityService = new ActivityService();
+
+                    // Get values from the textboxes
+                    string activityName = txtBox_ActivityName.Text;
+                    string description = txtBox_ActivityDescription.Text;
+                    DateTime startDate = DateTime.ParseExact(txtBox_ActivityStartDate.Text, "dd-MM-yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                    DateTime endDate = DateTime.ParseExact(txtBox_ActivityEndDate.Text, "dd-MM-yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+
+                    // Add activity
+                    activityService.AddActivity(activityName, description, startDate, endDate);
+
+                    // Refresh panel
+                    HideAllPanels();
+                    ShowPanel("Activities");
+
+                    // Clear text boxes (It doesn't clear with the panel refreshes)
+                    ResetAllInput();
+                }
+                else
+                {
+                    MessageBox.Show("Please enter appropiate values.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Write error to log and get file path
+                string filePath = ErrorLogger.LogError(ex);
+
+                // Display message box when an error occured with the appropiate error
+                MessageBox.Show("Something went wrong while adding the activity: " + ex.Message + Environment.NewLine
+                    + Environment.NewLine + "Error log location: " + filePath);
+            }
+        }
+        private void Btn_ChangeActivity_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Get selected item !!SelectedIndex is not a thing in winforms.
+                if (listViewActivities.SelectedItems.Count > 0)
+                {
+                    //Create a new ActivityService object
+                    ActivityService activityService = new ActivityService();
+
+                    // Get index 
+                    ListViewItem item = listViewActivities.SelectedItems[0];
+
+                    // Get values from selected item
+                    int activityId = int.Parse(item.SubItems[0].Text);
+                    string activityName = txtBox_ActivityName.Text;
+                    string description = txtBox_ActivityDescription.Text;
+                    DateTime startDate = DateTime.Parse(txtBox_ActivityStartDate.Text);
+                    DateTime endDate = DateTime.Parse(txtBox_ActivityEndDate.Text);
+
+                    // Change activity values
+                    activityService.ChangeActivity(activityId, activityName, description, startDate, endDate);
+
+                    // Refresh panel
+                    HideAllPanels();
+                    ShowPanel("Activity");
+
+                    // Clear text boxes (It doesn't clear with the panel refreshes)
+                    ResetAllInput();
+                }
+                else
+                {
+                    MessageBox.Show("Please select an item to change.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Write error to log and get file path
+                string filePath = ErrorLogger.LogError(ex);
+
+                // Display message box when an error occured with the appropiate error
+                MessageBox.Show("Something went wrong while changing the activity: " + ex.Message + Environment.NewLine
+                    + Environment.NewLine + "Error log location: " + filePath);
+            }
+        }
+        private void Btn_RemoveActivity_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (MessageBox.Show("Are you sure you wish to remove this activity?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    // Get selected item !!SelectedIndex is not a thing in winforms.
+                    if (listViewActivities.SelectedItems.Count > 0)
+                    {
+                        //Create a new ActivityService object
+                        ActivityService activityService = new ActivityService();
+
+                        // Get index 
+                        ListViewItem item = listViewActivities.SelectedItems[0];
+
+                        // Get values from selected item
+                        int activityId = int.Parse(item.SubItems[0].Text);
+
+                        // Remove activity
+                        activityService.RemoveActivity(activityId);
+
+                        // Refresh panel
+                        HideAllPanels();
+                        ShowPanel("Activity");
+
+                        // Clear text boxes (It doesn't clear with the panel refreshes)
+                        ResetAllInput();
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please select an item to remove.");
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Write error to log and get file path
+                string filePath = ErrorLogger.LogError(ex);
+
+                // Display message box when an error occured with the appropiate error
+                MessageBox.Show("Something went wrong while removing the activity: " + ex.Message + Environment.NewLine
+                    + Environment.NewLine + "Error log location: " + filePath);
             }
         }
 
