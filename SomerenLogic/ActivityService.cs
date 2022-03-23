@@ -36,7 +36,7 @@ namespace SomerenLogic
         public void ChangeActivity(int activityId, string activityName, string  description, DateTime startDate, DateTime endDate)
         {
             // Create query
-            string query = $"UPDATE ACTIVITY SET Activity_Name = '{activityName}' Description = '{description}', Start_Date = '{startDate}', End_Date = '{endDate}' WHERE Activity_Id = '{activityId}';";
+            string query = $"UPDATE ACTIVITY SET Activity_Name = '{activityName}', Description = '{description}', Start_Date = '{startDate}', End_Date = '{endDate}' WHERE Activity_Id = '{activityId}';";
 
             // Change activity from database
             activitydb.EditActivity(query);

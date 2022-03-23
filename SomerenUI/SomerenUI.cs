@@ -700,15 +700,15 @@ namespace SomerenUI
                     int activityId = int.Parse(item.SubItems[0].Text);
                     string activityName = txtBox_ActivityName.Text;
                     string description = txtBox_ActivityDescription.Text;
-                    DateTime startDate = DateTime.Parse(txtBox_ActivityStartDate.Text);
-                    DateTime endDate = DateTime.Parse(txtBox_ActivityEndDate.Text);
+                    DateTime startDate = DateTime.ParseExact(txtBox_ActivityStartDate.Text, "dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                    DateTime endDate = DateTime.ParseExact(txtBox_ActivityEndDate.Text, "dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
 
                     // Change activity values
                     activityService.ChangeActivity(activityId, activityName, description, startDate, endDate);
 
                     // Refresh panel
                     HideAllPanels();
-                    ShowPanel("Activity");
+                    ShowPanel("Activities");
 
                     // Clear text boxes (It doesn't clear with the panel refreshes)
                     ResetAllInput();
@@ -752,10 +752,11 @@ namespace SomerenUI
 
                         // Refresh panel
                         HideAllPanels();
-                        ShowPanel("Activity");
+                        ShowPanel("Activities");
 
                         // Clear text boxes (It doesn't clear with the panel refreshes)
                         ResetAllInput();
+                        
                     }
                     else
                     {
