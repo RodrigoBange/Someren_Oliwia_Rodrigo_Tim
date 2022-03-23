@@ -106,12 +106,12 @@
             this.imgRegister = new System.Windows.Forms.PictureBox();
             this.lbl_CashRegister = new System.Windows.Forms.Label();
             this.pnlActivities = new System.Windows.Forms.Panel();
-            this.txtBox_ActivityEndDate = new System.Windows.Forms.TextBox();
+            this.dateTimePickerEnd = new System.Windows.Forms.DateTimePicker();
+            this.dateTimePickerStart = new System.Windows.Forms.DateTimePicker();
             this.lbl_ActivityEndDate = new System.Windows.Forms.Label();
             this.lbl_ActivityStartDate = new System.Windows.Forms.Label();
             this.lbl_ActivityDescription = new System.Windows.Forms.Label();
             this.lbl_ActivityName = new System.Windows.Forms.Label();
-            this.txtBox_ActivityStartDate = new System.Windows.Forms.TextBox();
             this.txtBox_ActivityDescription = new System.Windows.Forms.TextBox();
             this.txtBox_ActivityName = new System.Windows.Forms.TextBox();
             this.btn_ChangeActivity = new System.Windows.Forms.Button();
@@ -204,19 +204,19 @@
             // dashboardToolStripMenuItem1
             // 
             this.dashboardToolStripMenuItem1.Name = "dashboardToolStripMenuItem1";
-            this.dashboardToolStripMenuItem1.Size = new System.Drawing.Size(262, 44);
+            this.dashboardToolStripMenuItem1.Size = new System.Drawing.Size(359, 44);
             this.dashboardToolStripMenuItem1.Text = "Dashboard";
             this.dashboardToolStripMenuItem1.Click += new System.EventHandler(this.DashboardToolStripMenuItem1_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(259, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(356, 6);
             // 
             // exitToolStripMenuItem
             // 
             this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(262, 44);
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(359, 44);
             this.exitToolStripMenuItem.Text = "Exit";
             this.exitToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
@@ -893,12 +893,12 @@
             // 
             // pnlActivities
             // 
-            this.pnlActivities.Controls.Add(this.txtBox_ActivityEndDate);
+            this.pnlActivities.Controls.Add(this.dateTimePickerEnd);
+            this.pnlActivities.Controls.Add(this.dateTimePickerStart);
             this.pnlActivities.Controls.Add(this.lbl_ActivityEndDate);
             this.pnlActivities.Controls.Add(this.lbl_ActivityStartDate);
             this.pnlActivities.Controls.Add(this.lbl_ActivityDescription);
             this.pnlActivities.Controls.Add(this.lbl_ActivityName);
-            this.pnlActivities.Controls.Add(this.txtBox_ActivityStartDate);
             this.pnlActivities.Controls.Add(this.txtBox_ActivityDescription);
             this.pnlActivities.Controls.Add(this.txtBox_ActivityName);
             this.pnlActivities.Controls.Add(this.btn_ChangeActivity);
@@ -913,13 +913,25 @@
             this.pnlActivities.Size = new System.Drawing.Size(1876, 896);
             this.pnlActivities.TabIndex = 8;
             // 
-            // txtBox_ActivityEndDate
+            // dateTimePickerEnd
             // 
-            this.txtBox_ActivityEndDate.Location = new System.Drawing.Point(799, 740);
-            this.txtBox_ActivityEndDate.Margin = new System.Windows.Forms.Padding(4);
-            this.txtBox_ActivityEndDate.Name = "txtBox_ActivityEndDate";
-            this.txtBox_ActivityEndDate.Size = new System.Drawing.Size(212, 31);
-            this.txtBox_ActivityEndDate.TabIndex = 17;
+            this.dateTimePickerEnd.CustomFormat = "dd/MM/yyyy HH:mm";
+            this.dateTimePickerEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePickerEnd.Location = new System.Drawing.Point(798, 741);
+            this.dateTimePickerEnd.Name = "dateTimePickerEnd";
+            this.dateTimePickerEnd.ShowUpDown = true;
+            this.dateTimePickerEnd.Size = new System.Drawing.Size(259, 31);
+            this.dateTimePickerEnd.TabIndex = 19;
+            // 
+            // dateTimePickerStart
+            // 
+            this.dateTimePickerStart.CustomFormat = "dd/MM/yyyy HH:mm";
+            this.dateTimePickerStart.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePickerStart.Location = new System.Drawing.Point(541, 741);
+            this.dateTimePickerStart.Name = "dateTimePickerStart";
+            this.dateTimePickerStart.ShowUpDown = true;
+            this.dateTimePickerStart.Size = new System.Drawing.Size(251, 31);
+            this.dateTimePickerStart.TabIndex = 18;
             // 
             // lbl_ActivityEndDate
             // 
@@ -964,14 +976,6 @@
             this.lbl_ActivityName.Size = new System.Drawing.Size(68, 25);
             this.lbl_ActivityName.TabIndex = 10;
             this.lbl_ActivityName.Text = "Name";
-            // 
-            // txtBox_ActivityStartDate
-            // 
-            this.txtBox_ActivityStartDate.Location = new System.Drawing.Point(541, 742);
-            this.txtBox_ActivityStartDate.Margin = new System.Windows.Forms.Padding(4);
-            this.txtBox_ActivityStartDate.Name = "txtBox_ActivityStartDate";
-            this.txtBox_ActivityStartDate.Size = new System.Drawing.Size(212, 31);
-            this.txtBox_ActivityStartDate.TabIndex = 15;
             // 
             // txtBox_ActivityDescription
             // 
@@ -1281,13 +1285,13 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(20)))), ((int)(((byte)(48)))));
             this.ClientSize = new System.Drawing.Size(1924, 971);
             this.Controls.Add(this.menuStrip1);
-            this.Controls.Add(this.pnlDashboard);
-            this.Controls.Add(this.pnlStudents);
-            this.Controls.Add(this.pnlTeachers);
             this.Controls.Add(this.pnlActivities);
             this.Controls.Add(this.pnlSupervisors);
             this.Controls.Add(this.pnlDrinkInventory);
             this.Controls.Add(this.pnlCashRegister);
+            this.Controls.Add(this.pnlDashboard);
+            this.Controls.Add(this.pnlStudents);
+            this.Controls.Add(this.pnlTeachers);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(5, 6, 5, 6);
@@ -1402,12 +1406,10 @@
         private System.Windows.Forms.Label lbl_DrinksAmount;
         private System.Windows.Forms.ToolStripMenuItem supervisorsToolStripMenuItem;
         private System.Windows.Forms.Panel pnlActivities;
-        private System.Windows.Forms.TextBox txtBox_ActivityEndDate;
         private System.Windows.Forms.Label lbl_ActivityEndDate;
         private System.Windows.Forms.Label lbl_ActivityStartDate;
         private System.Windows.Forms.Label lbl_ActivityDescription;
         private System.Windows.Forms.Label lbl_ActivityName;
-        private System.Windows.Forms.TextBox txtBox_ActivityStartDate;
         private System.Windows.Forms.TextBox txtBox_ActivityDescription;
         private System.Windows.Forms.TextBox txtBox_ActivityName;
         private System.Windows.Forms.Button btn_ChangeActivity;
@@ -1438,6 +1440,8 @@
         private System.Windows.Forms.ColumnHeader supervisorActivityName;
         private System.Windows.Forms.PictureBox imgSupervisors;
         private System.Windows.Forms.Label lbl_Supervisors;
+        private System.Windows.Forms.DateTimePicker dateTimePickerEnd;
+        private System.Windows.Forms.DateTimePicker dateTimePickerStart;
     }
 }
 

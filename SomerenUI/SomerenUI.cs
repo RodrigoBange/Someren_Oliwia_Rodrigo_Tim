@@ -223,8 +223,8 @@ namespace SomerenUI
                         ListViewItem li = new ListViewItem(activity.Number.ToString());
                         li.SubItems.Add(activity.Name);
                         li.SubItems.Add(activity.Description);
-                        li.SubItems.Add(activity.StartDate.ToString("dd/MM/yyyy HH:mm:ss"));
-                        li.SubItems.Add(activity.EndDate.ToString("dd/MM/yyyy HH:mm:ss"));
+                        li.SubItems.Add(activity.StartDate.ToString("dd/MM/yyyy HH:mm"));
+                        li.SubItems.Add(activity.EndDate.ToString("dd/MM/yyyy HH:mm"));
                         listViewActivities.Items.Add(li);
                     }
                 }
@@ -646,7 +646,7 @@ namespace SomerenUI
             {
                 // If all fields have values...
                 if (txtBox_ActivityName.Text != "" && txtBox_ActivityDescription.Text != "" &&
-                    txtBox_ActivityStartDate.Text != "" && txtBox_ActivityEndDate.Text != "")
+                    dateTimePickerStart.Value != null && dateTimePickerEnd.Value != null && (dateTimePickerStart.Value < dateTimePickerEnd.Value))
                 {
                     //Create a new ActivityService object
                     ActivityService activityService = new ActivityService();
@@ -654,8 +654,8 @@ namespace SomerenUI
                     // Get values from the textboxes
                     string activityName = txtBox_ActivityName.Text;
                     string description = txtBox_ActivityDescription.Text;
-                    DateTime startDate = DateTime.ParseExact(txtBox_ActivityStartDate.Text, "dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-                    DateTime endDate = DateTime.ParseExact(txtBox_ActivityEndDate.Text, "dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                    DateTime startDate = dateTimePickerStart.Value;
+                    DateTime endDate = dateTimePickerStart.Value;
 
                     // Add activity
                     activityService.AddActivity(activityName, description, startDate, endDate);
@@ -700,8 +700,8 @@ namespace SomerenUI
                     int activityId = int.Parse(item.SubItems[0].Text);
                     string activityName = txtBox_ActivityName.Text;
                     string description = txtBox_ActivityDescription.Text;
-                    DateTime startDate = DateTime.ParseExact(txtBox_ActivityStartDate.Text, "dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-                    DateTime endDate = DateTime.ParseExact(txtBox_ActivityEndDate.Text, "dd/MM/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+                    DateTime startDate = dateTimePickerStart.Value;
+                    DateTime endDate = dateTimePickerEnd.Value;
 
                     // Change activity values
                     activityService.ChangeActivity(activityId, activityName, description, startDate, endDate);
@@ -795,8 +795,7 @@ namespace SomerenUI
             // Clear text boxes -- Activity
             txtBox_ActivityName.Clear();
             txtBox_ActivityDescription.Clear();
-            txtBox_ActivityStartDate.Clear();
-            txtBox_ActivityEndDate.Clear();
         }
+
     }
 }
