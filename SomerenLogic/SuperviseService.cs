@@ -37,6 +37,9 @@ namespace SomerenLogic
 
             // Edit database
             supervisedb.EditSupervisors(query);
+
+            // Update teacher status
+            UpdateSuperviseStatus();
         }
 
         public void RemoveSupervisor(int activityId, int employeeId)
@@ -45,6 +48,24 @@ namespace SomerenLogic
 
             // Edit database
             supervisedb.EditSupervisors(query);
+
+            // Update teacher status
+            UpdateSuperviseStatus();
+        }
+
+        private void UpdateSuperviseStatus()
+        {
+            //First query to update all who supervise in TEACHERS
+            string query = $"UPDATE TEACHER SET TEACHER.Supervises = 1 FROM SUPERVISES JOIN TEACHER ON SUPERVISES.Employee_Id = TEACHER.Employee_Id;";
+
+            // Edit database
+            supervisedb.EditSupervisors(query);
+
+            // Second query to update all who don't supervise in TEACHERS
+            string secondQuery = $"UPDATE TEACHER SET TEACHER.Supervises = 0 FROM TEACHER LEFT JOIN SUPERVISES ON TEACHER.Employee_Id = SUPERVISES.Employee_Id WHERE SUPERVISES.Employee_id IS NULL;";
+
+            // Edit database
+            supervisedb.EditSupervisors(secondQuery);
         }
     }
 }

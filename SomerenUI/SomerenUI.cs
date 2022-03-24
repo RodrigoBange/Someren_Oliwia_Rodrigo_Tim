@@ -412,7 +412,7 @@ namespace SomerenUI
                     foreach (Supervise supervisor in supervisors)
                     {
                         ListViewItem li = new ListViewItem(supervisor.EmployeeId.ToString());
-                        li.SubItems.Add((supervisor.FirstName + supervisor.LastName));
+                        li.SubItems.Add($"{supervisor.FirstName} {supervisor.LastName}");
                         listViewActivitySupervisors.Items.Add(li);
                     }
 
@@ -445,7 +445,7 @@ namespace SomerenUI
                     foreach (Supervise nonSupervisor in distinctNonSupervisors)
                     {
                         ListViewItem li = new ListViewItem(nonSupervisor.EmployeeId.ToString());
-                        li.SubItems.Add(nonSupervisor.FirstName + nonSupervisor.LastName);
+                        li.SubItems.Add($"{nonSupervisor.FirstName} {nonSupervisor.LastName}");
                         listViewActivitiesNonSupervisors.Items.Add(li);
                     }
                 }
@@ -931,7 +931,7 @@ namespace SomerenUI
                 string filePath = ErrorLogger.LogError(ex);
 
                 // Display message box when an error occured with the appropiate error
-                MessageBox.Show("Something went wrong while removing the activity: " + ex.Message + Environment.NewLine
+                MessageBox.Show("Something went wrong while removing the supervisor: " + ex.Message + Environment.NewLine
                     + Environment.NewLine + "Error log location: " + filePath);
             }
 
@@ -940,29 +940,32 @@ namespace SomerenUI
         {
             try
             {
-                // Create new SuperviseService
-                SuperviseService supervisedb = new SuperviseService();
-
-                // Get selected index from listviewActivities and the activity id
-                int activityIndex = listViewSupervisorActivities.SelectedItems[0].Index;
-                ListViewItem activityItem = listViewSupervisorActivities.SelectedItems[0];
-                int activityId = int.Parse(activityItem.SubItems[0].Text);
-
-                // Get selected index from listViewSupervisors and the employee id
-                ListViewItem supervisorItem = listViewActivitiesNonSupervisors.SelectedItems[0];
-                int employeeId = int.Parse(supervisorItem.SubItems[0].Text);
-
-                // Add supervisor to activity
-                supervisedb.AddSupervisor(activityId, employeeId);
-
-                // Refresh listviews
-                ResetAllInput();
-                if (listViewSupervisorActivities.SelectedItems.Count > 0)
+                if (MessageBox.Show("Are you sure that you wish to add this supervisor?", "Confirmation required", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    listViewSupervisorActivities.Items[activityIndex].Selected = false;
-                    listViewSupervisorActivities.Select();
-                    listViewSupervisorActivities.Items[activityIndex].Selected = true;
-                    listViewSupervisorActivities.Select();
+                    // Create new SuperviseService
+                    SuperviseService supervisedb = new SuperviseService();
+
+                    // Get selected index from listviewActivities and the activity id
+                    int activityIndex = listViewSupervisorActivities.SelectedItems[0].Index;
+                    ListViewItem activityItem = listViewSupervisorActivities.SelectedItems[0];
+                    int activityId = int.Parse(activityItem.SubItems[0].Text);
+
+                    // Get selected index from listViewSupervisors and the employee id
+                    ListViewItem supervisorItem = listViewActivitiesNonSupervisors.SelectedItems[0];
+                    int employeeId = int.Parse(supervisorItem.SubItems[0].Text);
+
+                    // Add supervisor to activity
+                    supervisedb.AddSupervisor(activityId, employeeId);
+
+                    // Refresh listviews
+                    ResetAllInput();
+                    if (listViewSupervisorActivities.SelectedItems.Count > 0)
+                    {
+                        listViewSupervisorActivities.Items[activityIndex].Selected = false;
+                        listViewSupervisorActivities.Select();
+                        listViewSupervisorActivities.Items[activityIndex].Selected = true;
+                        listViewSupervisorActivities.Select();
+                    }
                 }
             }
             catch (Exception ex)
@@ -971,7 +974,7 @@ namespace SomerenUI
                 string filePath = ErrorLogger.LogError(ex);
 
                 // Display message box when an error occured with the appropiate error
-                MessageBox.Show("Something went wrong while removing the activity: " + ex.Message + Environment.NewLine
+                MessageBox.Show("Something went wrong while adding the supervisor: " + ex.Message + Environment.NewLine
                     + Environment.NewLine + "Error log location: " + filePath);
             }
         }

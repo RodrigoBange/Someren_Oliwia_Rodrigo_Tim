@@ -1131,6 +1131,7 @@
             // nonSupervisorId
             // 
             this.nonSupervisorId.Text = "Id";
+            this.nonSupervisorId.Width = 40;
             // 
             // nonSupervisorName
             // 
@@ -1160,6 +1161,7 @@
             // supervisorId
             // 
             this.supervisorId.Text = "Id";
+            this.supervisorId.Width = 40;
             // 
             // supervisorName
             // 
@@ -1222,11 +1224,12 @@
             // supervisorActivityId
             // 
             this.supervisorActivityId.Text = "Id";
+            this.supervisorActivityId.Width = 40;
             // 
             // supervisorActivityName
             // 
             this.supervisorActivityName.Text = "Name";
-            this.supervisorActivityName.Width = 160;
+            this.supervisorActivityName.Width = 155;
             // 
             // imgSupervisors
             // 
