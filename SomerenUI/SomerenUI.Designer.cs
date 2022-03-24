@@ -897,7 +897,7 @@
             // 
             this.dateTimePickerEnd.CustomFormat = "dd/MM/yyyy HH:mm";
             this.dateTimePickerEnd.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dateTimePickerEnd.Location = new System.Drawing.Point(598, 593);
+            this.dateTimePickerEnd.Location = new System.Drawing.Point(627, 593);
             this.dateTimePickerEnd.Margin = new System.Windows.Forms.Padding(2);
             this.dateTimePickerEnd.Name = "dateTimePickerEnd";
             this.dateTimePickerEnd.ShowUpDown = true;
@@ -919,7 +919,7 @@
             // 
             this.lbl_ActivityEndDate.AutoSize = true;
             this.lbl_ActivityEndDate.ForeColor = System.Drawing.Color.White;
-            this.lbl_ActivityEndDate.Location = new System.Drawing.Point(595, 567);
+            this.lbl_ActivityEndDate.Location = new System.Drawing.Point(622, 567);
             this.lbl_ActivityEndDate.Name = "lbl_ActivityEndDate";
             this.lbl_ActivityEndDate.Size = new System.Drawing.Size(148, 20);
             this.lbl_ActivityEndDate.TabIndex = 16;
@@ -1020,6 +1020,7 @@
             this.listViewActivities.TabIndex = 5;
             this.listViewActivities.UseCompatibleStateImageBehavior = false;
             this.listViewActivities.View = System.Windows.Forms.View.Details;
+            this.listViewActivities.SelectedIndexChanged += new System.EventHandler(this.ListViewActivities_SelectedIndexChanged);
             // 
             // activityId
             // 
@@ -1261,11 +1262,11 @@
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(20)))), ((int)(((byte)(48)))));
             this.ClientSize = new System.Drawing.Size(1443, 777);
             this.Controls.Add(this.menuStrip1);
-            this.Controls.Add(this.pnlSupervisors);
+            this.Controls.Add(this.pnlActivities);
             this.Controls.Add(this.pnlDashboard);
             this.Controls.Add(this.pnlStudents);
             this.Controls.Add(this.pnlTeachers);
-            this.Controls.Add(this.pnlActivities);
+            this.Controls.Add(this.pnlSupervisors);
             this.Controls.Add(this.pnlDrinkInventory);
             this.Controls.Add(this.pnlCashRegister);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));

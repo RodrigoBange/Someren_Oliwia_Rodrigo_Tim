@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 using System.Drawing;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -359,6 +360,7 @@ namespace SomerenUI
                 lbl_DrinksAmount.Text = "1";
             }
         }
+
         private void ListViewRegisterStudents_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Get selected item !!SelectedIndex is not a thing in winforms.
@@ -372,6 +374,7 @@ namespace SomerenUI
                 btn_Checkout.Enabled = true;
             }
         }
+
         private void ListViewDrinkInventory_SelectedIndexChanged(object sender, EventArgs e)
         {
             // Get selected item !!SelectedIndex is not a thing in winforms.
@@ -490,6 +493,22 @@ namespace SomerenUI
             else
             {
                 btn_AddSupervisor.Enabled = false;
+            }
+        }
+
+        private void ListViewActivities_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Get selected item !!SelectedIndex is not a thing in winforms.
+            if (listViewActivities.SelectedItems.Count > 0)
+            {
+                // Get index 
+                ListViewItem item = listViewActivities.SelectedItems[0];
+
+                //Set values to boxes
+                txtBox_ActivityName.Text = item.SubItems[1].Text;
+                txtBox_ActivityDescription.Text = item.SubItems[2].Text;
+                dateTimePickerStart.Value = DateTime.ParseExact(item.SubItems[3].Text, "dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture);
+                dateTimePickerEnd.Value = DateTime.ParseExact(item.SubItems[4].Text, "dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture);
             }
         }
 
@@ -758,35 +777,67 @@ namespace SomerenUI
                 lbl_DrinksAmount.Text = counter.ToString();
             }
         }
+
         private void Btn_AddActivity_Click(object sender, EventArgs e)
         {
             try
             {
+                // Create a new ActivityService object
+                ActivityService activityService = new ActivityService();
+
+                // Create list of all existing activities
+                List<Activity> activities = activityService.GetActivities();
+
+                // Bool for if activity exists
+                bool activityExists = false;
+
                 // If all fields have values...
                 if (txtBox_ActivityName.Text != "" && txtBox_ActivityDescription.Text != "" &&
                     dateTimePickerStart.Value != null && dateTimePickerEnd.Value != null && (dateTimePickerStart.Value < dateTimePickerEnd.Value))
                 {
-                    //Create a new ActivityService object
-                    ActivityService activityService = new ActivityService();
-
                     // Get values from the textboxes
                     string activityName = txtBox_ActivityName.Text;
                     string description = txtBox_ActivityDescription.Text;
-                    DateTime startDate = dateTimePickerStart.Value;
-                    DateTime endDate = dateTimePickerStart.Value;
+                    DateTime startDate = DateTime.ParseExact(dateTimePickerStart.Value.ToString("dd/MM/yyyy hh:mm"), "dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture);
+                    DateTime endDate = DateTime.ParseExact(dateTimePickerEnd.Value.ToString("dd/MM/yyyy hh:mm"), "dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture);
 
-                    // Add activity
-                    activityService.AddActivity(activityName, description, startDate, endDate);
+                    //MessageBox.Show(dateTimePickerStart.Value.ToString("dd/MM/yyyy hh:mm"));
 
-                    // Refresh panel
-                    HideAllPanels();
-                    ShowPanel("Activities");
+                    // Check if activity already exists
+                    foreach (Activity activity in activities)
+                    {
+                        if (activity.Name == activityName && activity.StartDate == startDate && activity.EndDate == endDate)
+                        {
+                            // Set bool to true
+                            activityExists = true;
 
-                    // Clear text boxes (It doesn't clear with the panel refreshes)
-                    ResetAllInput();
+                            // Stop the loop
+                            break;
+                        }
+                    }
+
+                    // If activity does not exist
+                    if (!activityExists)
+                    {
+                        // Add activity
+                        activityService.AddActivity(activityName, description, startDate, endDate);
+
+                        // Refresh panel
+                        HideAllPanels();
+                        ShowPanel("Activities");
+
+                        // Clear text boxes (It doesn't clear with the panel refreshes)
+                        ResetAllInput();
+                    }
+                    else
+                    {
+                        // Display message about existing activity
+                        MessageBox.Show("This activity already exists at the time and date.");
+                    }
                 }
                 else
                 {
+                    // Display message about incorrect values
                     MessageBox.Show("Please enter appropiate values.");
                 }
 
@@ -801,6 +852,7 @@ namespace SomerenUI
                     + Environment.NewLine + "Error log location: " + filePath);
             }
         }
+
         private void Btn_ChangeActivity_Click(object sender, EventArgs e)
         {
             try
@@ -818,8 +870,8 @@ namespace SomerenUI
                     int activityId = int.Parse(item.SubItems[0].Text);
                     string activityName = txtBox_ActivityName.Text;
                     string description = txtBox_ActivityDescription.Text;
-                    DateTime startDate = dateTimePickerStart.Value;
-                    DateTime endDate = dateTimePickerEnd.Value;
+                    DateTime startDate = DateTime.ParseExact(dateTimePickerStart.Value.ToString("dd/MM/yyyy hh:mm"), "dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture);
+                    DateTime endDate = DateTime.ParseExact(dateTimePickerEnd.Value.ToString("dd/MM/yyyy hh:mm"), "dd/MM/yyyy hh:mm", CultureInfo.InvariantCulture);
 
                     // Change activity values
                     activityService.ChangeActivity(activityId, activityName, description, startDate, endDate);
@@ -835,7 +887,6 @@ namespace SomerenUI
                 {
                     MessageBox.Show("Please select an item to change.");
                 }
-
             }
             catch (Exception ex)
             {
@@ -847,6 +898,7 @@ namespace SomerenUI
                     + Environment.NewLine + "Error log location: " + filePath);
             }
         }
+
         private void Btn_RemoveActivity_Click(object sender, EventArgs e)
         {
             try
@@ -893,6 +945,7 @@ namespace SomerenUI
                     + Environment.NewLine + "Error log location: " + filePath);
             }
         }
+
         private void Btn_RemoveSupervisor_Click(object sender, EventArgs e)
         {
             try
@@ -934,8 +987,8 @@ namespace SomerenUI
                 MessageBox.Show("Something went wrong while removing the supervisor: " + ex.Message + Environment.NewLine
                     + Environment.NewLine + "Error log location: " + filePath);
             }
-
         }
+
         private void Btn_AddSupervisor_Click(object sender, EventArgs e)
         {
             try
@@ -1003,7 +1056,5 @@ namespace SomerenUI
             btn_AddSupervisor.Enabled = false; 
             btn_RemoveSupervisor.Enabled = false;
         }
-
-
     }
 }
