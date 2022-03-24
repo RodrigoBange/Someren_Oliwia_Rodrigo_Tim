@@ -245,7 +245,22 @@ namespace SomerenUI
 
                 try
                 {
+                    // Fill the activity listview with activities
+                    ActivityService activityService = new ActivityService();
+                    List<Activity> activities = activityService.GetActivities();
 
+                    // Clear the listview before adding items
+                    listViewSupervisorActivities.Items.Clear();
+                    listViewActivitiesNonSupervisors.Items.Clear();
+                    listViewActivitySupervisors.Items.Clear();
+
+                    // Add the activities to the list
+                    foreach (Activity activity in activities)
+                    {
+                        ListViewItem li = new ListViewItem(activity.Number.ToString());
+                        li.SubItems.Add(activity.Name);
+                        listViewSupervisorActivities.Items.Add(li);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -373,6 +388,109 @@ namespace SomerenUI
                 if (item.SubItems[3].Text == "Alcoholic") { cBox_DrinkType.SelectedIndex = 1; }
                 else { cBox_DrinkType.SelectedIndex = 0; }
             }           
+        }
+
+        private void ListViewSupervisorActivities_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                // Get selected item
+                if (listViewSupervisorActivities.SelectedItems.Count > 0)
+                {
+                    // Get Listview item and activityId
+                    ListViewItem item = listViewSupervisorActivities.SelectedItems[0];
+                    int activityId = int.Parse(item.SubItems[0].Text);
+
+                    // Fill the supervisor listview with supervisors from that activity
+                    SuperviseService superviseService = new SuperviseService();
+                    List<Supervise> supervisors = superviseService.GetSupervisors(activityId);
+
+                    // Clear the listview before adding items
+                    listViewActivitySupervisors.Items.Clear();
+
+                    // Add the supervisors to the list
+                    foreach (Supervise supervisor in supervisors)
+                    {
+                        ListViewItem li = new ListViewItem(supervisor.EmployeeId.ToString());
+                        li.SubItems.Add((supervisor.FirstName + supervisor.LastName));
+                        listViewActivitySupervisors.Items.Add(li);
+                    }
+
+                    // Fill the non supervisor listview with teachers who are not supervising the activity
+                    List<Supervise> nonSupervisors = superviseService.GetNonSupervisors(activityId);
+
+                    // Clear the listview before adding items
+                    listViewActivitiesNonSupervisors.Items.Clear();
+                    
+                    // Delete all existing supervisors with the same from nonsupervisors
+                    for (int i = 0; i < supervisors.Count; i++)
+                    {
+                        if (nonSupervisors.Any(nonSupervisor => nonSupervisor.EmployeeId == supervisors[i].EmployeeId))
+                        {
+                            nonSupervisors.RemoveAll(nonSupervisor => nonSupervisor.EmployeeId == supervisors[i].EmployeeId);
+                        }
+                    }                  
+                    
+                    // Remove all duplicates and refresh list
+                    var distinctTeachers = nonSupervisors.GroupBy(x => x.EmployeeId).Select(x => x.First());
+                    List<Supervise> distinctNonSupervisors = new List<Supervise>();
+
+                    // Add distinct non supervisors to the new list
+                    foreach(var teacher in distinctTeachers)
+                    {
+                        distinctNonSupervisors.Add(teacher);
+                    }
+
+                    // Add all non supervisors to the listview
+                    foreach (Supervise nonSupervisor in distinctNonSupervisors)
+                    {
+                        ListViewItem li = new ListViewItem(nonSupervisor.EmployeeId.ToString());
+                        li.SubItems.Add(nonSupervisor.FirstName + nonSupervisor.LastName);
+                        listViewActivitiesNonSupervisors.Items.Add(li);
+                    }
+                }
+                else
+                {
+                    // Disable buttons
+                    btn_AddSupervisor.Enabled = false;
+                    btn_RemoveSupervisor.Enabled = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Write error to log and get file path
+                string filePath = ErrorLogger.LogError(ex);
+
+                // Display message box when an error occured with the appropiate error
+                MessageBox.Show("Something went wrong while removing the activity: " + ex.Message + Environment.NewLine
+                    + Environment.NewLine + "Error log location: " + filePath);
+            }
+        }
+
+        private void ListViewActivitySupervisors_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Enable or disable button depending on if an item is selected
+            if (listViewActivitySupervisors.SelectedItems.Count > 0)
+            {
+                btn_RemoveSupervisor.Enabled = true;
+            }
+            else
+            {
+                btn_RemoveSupervisor.Enabled = false;
+            }
+        }
+
+        private void ListViewActivitiesNonSupervisors_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Enable or disable button depending on if an item is selected
+            if (listViewActivitiesNonSupervisors.SelectedItems.Count > 0)
+            {
+                btn_AddSupervisor.Enabled = true;
+            }
+            else
+            {
+                btn_AddSupervisor.Enabled = false;
+            }
         }
 
         /* BUTTON BEHAVIOURS */
@@ -775,6 +893,88 @@ namespace SomerenUI
                     + Environment.NewLine + "Error log location: " + filePath);
             }
         }
+        private void Btn_RemoveSupervisor_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (MessageBox.Show("Are you sure that you wish to remove this supervisor?", "Confirmation required", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    // Create new SuperviseService
+                    SuperviseService supervisedb = new SuperviseService();
+
+                    // Get selected index from listviewActivities and the activity id
+                    int activityIndex = listViewSupervisorActivities.SelectedItems[0].Index;
+                    ListViewItem activityItem = listViewSupervisorActivities.SelectedItems[0];
+                    int activityId = int.Parse(activityItem.SubItems[0].Text);
+
+                    // Get selected index from listViewSupervisors and the employee id
+                    ListViewItem supervisorItem = listViewActivitySupervisors.SelectedItems[0];
+                    int employeeId = int.Parse(supervisorItem.SubItems[0].Text);
+
+                    // Delete supervisor from activity
+                    supervisedb.RemoveSupervisor(activityId, employeeId);
+
+                    // Refresh listviews
+                    ResetAllInput();
+                    if (listViewSupervisorActivities.SelectedItems.Count > 0)
+                    {
+                        listViewSupervisorActivities.Items[activityIndex].Selected = false;
+                        listViewSupervisorActivities.Select();
+                        listViewSupervisorActivities.Items[activityIndex].Selected = true;
+                        listViewSupervisorActivities.Select();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Write error to log and get file path
+                string filePath = ErrorLogger.LogError(ex);
+
+                // Display message box when an error occured with the appropiate error
+                MessageBox.Show("Something went wrong while removing the activity: " + ex.Message + Environment.NewLine
+                    + Environment.NewLine + "Error log location: " + filePath);
+            }
+
+        }
+        private void Btn_AddSupervisor_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Create new SuperviseService
+                SuperviseService supervisedb = new SuperviseService();
+
+                // Get selected index from listviewActivities and the activity id
+                int activityIndex = listViewSupervisorActivities.SelectedItems[0].Index;
+                ListViewItem activityItem = listViewSupervisorActivities.SelectedItems[0];
+                int activityId = int.Parse(activityItem.SubItems[0].Text);
+
+                // Get selected index from listViewSupervisors and the employee id
+                ListViewItem supervisorItem = listViewActivitiesNonSupervisors.SelectedItems[0];
+                int employeeId = int.Parse(supervisorItem.SubItems[0].Text);
+
+                // Add supervisor to activity
+                supervisedb.AddSupervisor(activityId, employeeId);
+
+                // Refresh listviews
+                ResetAllInput();
+                if (listViewSupervisorActivities.SelectedItems.Count > 0)
+                {
+                    listViewSupervisorActivities.Items[activityIndex].Selected = false;
+                    listViewSupervisorActivities.Select();
+                    listViewSupervisorActivities.Items[activityIndex].Selected = true;
+                    listViewSupervisorActivities.Select();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Write error to log and get file path
+                string filePath = ErrorLogger.LogError(ex);
+
+                // Display message box when an error occured with the appropiate error
+                MessageBox.Show("Something went wrong while removing the activity: " + ex.Message + Environment.NewLine
+                    + Environment.NewLine + "Error log location: " + filePath);
+            }
+        }
 
         /* RESET ALL INPUT METHOD */
         private void ResetAllInput()
@@ -795,7 +995,12 @@ namespace SomerenUI
             // Clear text boxes -- Activity
             txtBox_ActivityName.Clear();
             txtBox_ActivityDescription.Clear();
+
+            // Disable all buttons - Supervisors
+            btn_AddSupervisor.Enabled = false; 
+            btn_RemoveSupervisor.Enabled = false;
         }
+
 
     }
 }
