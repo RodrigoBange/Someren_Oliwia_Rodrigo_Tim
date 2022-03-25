@@ -142,6 +142,17 @@
             this.supervisorActivityName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.imgSupervisors = new System.Windows.Forms.PictureBox();
             this.lbl_Supervisors = new System.Windows.Forms.Label();
+            this.pnlLogin = new System.Windows.Forms.Panel();
+            this.btn_DirectToRegister = new System.Windows.Forms.Button();
+            this.lbl_LoginNoAccount = new System.Windows.Forms.Label();
+            this.txtBox_LoginPassword = new System.Windows.Forms.TextBox();
+            this.txtBox_LoginEmail = new System.Windows.Forms.TextBox();
+            this.lbl_LoginPassword = new System.Windows.Forms.Label();
+            this.lbl_LoginEmail = new System.Windows.Forms.Label();
+            this.lbl_LoginSubTitle = new System.Windows.Forms.Label();
+            this.btn_LogIn = new System.Windows.Forms.Button();
+            this.imgLogin = new System.Windows.Forms.PictureBox();
+            this.lbl_LoginTitle = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imgDashboard)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.pnlDashboard.SuspendLayout();
@@ -157,6 +168,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.imgActivities)).BeginInit();
             this.pnlSupervisors.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgSupervisors)).BeginInit();
+            this.pnlLogin.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imgLogin)).BeginInit();
             this.SuspendLayout();
             // 
             // imgDashboard
@@ -1255,17 +1268,143 @@
             this.lbl_Supervisors.TabIndex = 3;
             this.lbl_Supervisors.Text = "Supervisors";
             // 
+            // pnlLogin
+            // 
+            this.pnlLogin.Controls.Add(this.btn_DirectToRegister);
+            this.pnlLogin.Controls.Add(this.lbl_LoginNoAccount);
+            this.pnlLogin.Controls.Add(this.txtBox_LoginPassword);
+            this.pnlLogin.Controls.Add(this.txtBox_LoginEmail);
+            this.pnlLogin.Controls.Add(this.lbl_LoginPassword);
+            this.pnlLogin.Controls.Add(this.lbl_LoginEmail);
+            this.pnlLogin.Controls.Add(this.lbl_LoginSubTitle);
+            this.pnlLogin.Controls.Add(this.btn_LogIn);
+            this.pnlLogin.Controls.Add(this.imgLogin);
+            this.pnlLogin.Controls.Add(this.lbl_LoginTitle);
+            this.pnlLogin.Location = new System.Drawing.Point(18, 42);
+            this.pnlLogin.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.pnlLogin.Name = "pnlLogin";
+            this.pnlLogin.Size = new System.Drawing.Size(1407, 717);
+            this.pnlLogin.TabIndex = 10;
+            // 
+            // btn_DirectToRegister
+            // 
+            this.btn_DirectToRegister.Location = new System.Drawing.Point(24, 463);
+            this.btn_DirectToRegister.Name = "btn_DirectToRegister";
+            this.btn_DirectToRegister.Size = new System.Drawing.Size(188, 35);
+            this.btn_DirectToRegister.TabIndex = 25;
+            this.btn_DirectToRegister.Text = "Create a new account";
+            this.btn_DirectToRegister.UseVisualStyleBackColor = true;
+            // 
+            // lbl_LoginNoAccount
+            // 
+            this.lbl_LoginNoAccount.AutoSize = true;
+            this.lbl_LoginNoAccount.BackColor = System.Drawing.Color.Transparent;
+            this.lbl_LoginNoAccount.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_LoginNoAccount.ForeColor = System.Drawing.Color.White;
+            this.lbl_LoginNoAccount.Location = new System.Drawing.Point(18, 412);
+            this.lbl_LoginNoAccount.Name = "lbl_LoginNoAccount";
+            this.lbl_LoginNoAccount.Size = new System.Drawing.Size(365, 32);
+            this.lbl_LoginNoAccount.TabIndex = 24;
+            this.lbl_LoginNoAccount.Text = "No account? Register here: ";
+            // 
+            // txtBox_LoginPassword
+            // 
+            this.txtBox_LoginPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBox_LoginPassword.Location = new System.Drawing.Point(25, 270);
+            this.txtBox_LoginPassword.Name = "txtBox_LoginPassword";
+            this.txtBox_LoginPassword.Size = new System.Drawing.Size(230, 32);
+            this.txtBox_LoginPassword.TabIndex = 23;
+            // 
+            // txtBox_LoginEmail
+            // 
+            this.txtBox_LoginEmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBox_LoginEmail.Location = new System.Drawing.Point(24, 173);
+            this.txtBox_LoginEmail.Name = "txtBox_LoginEmail";
+            this.txtBox_LoginEmail.Size = new System.Drawing.Size(230, 32);
+            this.txtBox_LoginEmail.TabIndex = 22;
+            // 
+            // lbl_LoginPassword
+            // 
+            this.lbl_LoginPassword.AutoSize = true;
+            this.lbl_LoginPassword.BackColor = System.Drawing.Color.Transparent;
+            this.lbl_LoginPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_LoginPassword.ForeColor = System.Drawing.Color.White;
+            this.lbl_LoginPassword.Location = new System.Drawing.Point(19, 230);
+            this.lbl_LoginPassword.Name = "lbl_LoginPassword";
+            this.lbl_LoginPassword.Size = new System.Drawing.Size(120, 29);
+            this.lbl_LoginPassword.TabIndex = 21;
+            this.lbl_LoginPassword.Text = "Password";
+            // 
+            // lbl_LoginEmail
+            // 
+            this.lbl_LoginEmail.AutoSize = true;
+            this.lbl_LoginEmail.BackColor = System.Drawing.Color.Transparent;
+            this.lbl_LoginEmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_LoginEmail.ForeColor = System.Drawing.Color.White;
+            this.lbl_LoginEmail.Location = new System.Drawing.Point(20, 133);
+            this.lbl_LoginEmail.Name = "lbl_LoginEmail";
+            this.lbl_LoginEmail.Size = new System.Drawing.Size(169, 29);
+            this.lbl_LoginEmail.TabIndex = 20;
+            this.lbl_LoginEmail.Text = "Email Address";
+            // 
+            // lbl_LoginSubTitle
+            // 
+            this.lbl_LoginSubTitle.AutoSize = true;
+            this.lbl_LoginSubTitle.BackColor = System.Drawing.Color.Transparent;
+            this.lbl_LoginSubTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_LoginSubTitle.ForeColor = System.Drawing.Color.White;
+            this.lbl_LoginSubTitle.Location = new System.Drawing.Point(18, 62);
+            this.lbl_LoginSubTitle.Name = "lbl_LoginSubTitle";
+            this.lbl_LoginSubTitle.Size = new System.Drawing.Size(366, 32);
+            this.lbl_LoginSubTitle.TabIndex = 19;
+            this.lbl_LoginSubTitle.Text = "Please log in to gain access";
+            // 
+            // btn_LogIn
+            // 
+            this.btn_LogIn.Location = new System.Drawing.Point(24, 327);
+            this.btn_LogIn.Name = "btn_LogIn";
+            this.btn_LogIn.Size = new System.Drawing.Size(120, 35);
+            this.btn_LogIn.TabIndex = 6;
+            this.btn_LogIn.Text = "Log in";
+            this.btn_LogIn.UseVisualStyleBackColor = true;
+            this.btn_LogIn.Click += new System.EventHandler(this.Btn_LogIn_Click);
+            // 
+            // imgLogin
+            // 
+            this.imgLogin.Image = global::SomerenUI.Properties.Resources.someren;
+            this.imgLogin.InitialImage = ((System.Drawing.Image)(resources.GetObject("imgLogin.InitialImage")));
+            this.imgLogin.Location = new System.Drawing.Point(1208, 65);
+            this.imgLogin.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.imgLogin.Name = "imgLogin";
+            this.imgLogin.Size = new System.Drawing.Size(195, 189);
+            this.imgLogin.TabIndex = 0;
+            this.imgLogin.TabStop = false;
+            // 
+            // lbl_LoginTitle
+            // 
+            this.lbl_LoginTitle.AutoSize = true;
+            this.lbl_LoginTitle.BackColor = System.Drawing.Color.Transparent;
+            this.lbl_LoginTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 17F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_LoginTitle.ForeColor = System.Drawing.Color.White;
+            this.lbl_LoginTitle.Location = new System.Drawing.Point(15, 15);
+            this.lbl_LoginTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbl_LoginTitle.Name = "lbl_LoginTitle";
+            this.lbl_LoginTitle.Size = new System.Drawing.Size(101, 39);
+            this.lbl_LoginTitle.TabIndex = 3;
+            this.lbl_LoginTitle.Text = "Login";
+            // 
             // SomerenUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(20)))), ((int)(((byte)(48)))));
             this.ClientSize = new System.Drawing.Size(1443, 777);
+            this.Controls.Add(this.pnlLogin);
             this.Controls.Add(this.menuStrip1);
-            this.Controls.Add(this.pnlActivities);
             this.Controls.Add(this.pnlDashboard);
             this.Controls.Add(this.pnlStudents);
             this.Controls.Add(this.pnlTeachers);
+            this.Controls.Add(this.pnlActivities);
             this.Controls.Add(this.pnlSupervisors);
             this.Controls.Add(this.pnlDrinkInventory);
             this.Controls.Add(this.pnlCashRegister);
@@ -1299,6 +1438,9 @@
             this.pnlSupervisors.ResumeLayout(false);
             this.pnlSupervisors.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgSupervisors)).EndInit();
+            this.pnlLogin.ResumeLayout(false);
+            this.pnlLogin.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imgLogin)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1419,6 +1561,17 @@
         private System.Windows.Forms.Label lbl_Supervisors;
         private System.Windows.Forms.DateTimePicker dateTimePickerEnd;
         private System.Windows.Forms.DateTimePicker dateTimePickerStart;
+        private System.Windows.Forms.Panel pnlLogin;
+        private System.Windows.Forms.Button btn_DirectToRegister;
+        private System.Windows.Forms.Label lbl_LoginNoAccount;
+        private System.Windows.Forms.TextBox txtBox_LoginPassword;
+        private System.Windows.Forms.TextBox txtBox_LoginEmail;
+        private System.Windows.Forms.Label lbl_LoginPassword;
+        private System.Windows.Forms.Label lbl_LoginEmail;
+        private System.Windows.Forms.Label lbl_LoginSubTitle;
+        private System.Windows.Forms.Button btn_LogIn;
+        private System.Windows.Forms.PictureBox imgLogin;
+        private System.Windows.Forms.Label lbl_LoginTitle;
     }
 }
 

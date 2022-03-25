@@ -9,6 +9,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -27,6 +28,25 @@ namespace SomerenUI
         {
             // Show dashboard panel
             ShowPanel("Dashboard");
+
+            // Testing password on load
+            // FOR REGISTRATION
+            //PasswordWithSaltHasher pwHasher = new PasswordWithSaltHasher();
+            //HashWithSaltResult hashResultSha256 = pwHasher.HashWithSalt("test_P455", 64, SHA256.Create());
+
+            //string password = hashResultSha256.Salt + hashResultSha256.Digest;
+
+            //Account user = new Account()
+            //{
+            //    Email = "user@gmail.com",
+            //    Password = password,
+            //    Salt = hashResultSha256.Salt,
+            //    IsAdmin = false
+            //};
+
+            //AccountService accountService = new AccountService();
+            //accountService.RegisterAccount(user);
+
         }
 
         /* PANEL BEHAVIOURS */
@@ -857,10 +877,10 @@ namespace SomerenUI
         {
             try
             {
-                // Get selected item !!SelectedIndex is not a thing in winforms.
+                // Get selected item
                 if (listViewActivities.SelectedItems.Count > 0)
                 {
-                    //Create a new ActivityService object
+                    // Create a new ActivityService object
                     ActivityService activityService = new ActivityService();
 
                     // Get index 
@@ -905,10 +925,10 @@ namespace SomerenUI
             {
                 if (MessageBox.Show("Are you sure you wish to remove this activity?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
-                    // Get selected item !!SelectedIndex is not a thing in winforms.
+                    // Get selected item
                     if (listViewActivities.SelectedItems.Count > 0)
                     {
-                        //Create a new ActivityService object
+                        // Create a new ActivityService object
                         ActivityService activityService = new ActivityService();
 
                         // Get index 
@@ -1055,6 +1075,67 @@ namespace SomerenUI
             // Disable all buttons - Supervisors
             btn_AddSupervisor.Enabled = false; 
             btn_RemoveSupervisor.Enabled = false;
+        }
+
+        private void Btn_LogIn_Click(object sender, EventArgs e)
+        {
+            try
+            {   
+                // Get txtBox info
+                string email = txtBox_LoginEmail.Text;
+                string password = txtBox_LoginPassword.Text;
+
+                // If values have been entered
+                if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password))
+                {
+                    // Create new AccountService
+                    AccountService accountService = new AccountService();
+
+                    // Get user information from database
+                    Account user = accountService.GetUserInfo(email);
+
+                    // If user has been found
+                    if (user != null)
+                    {
+                        // Convert password
+                        PasswordWithSaltHasher hasher = new PasswordWithSaltHasher();
+                        HashWithSaltResult convertedHashResult = hasher.ConvertedHashWithSalt(password, user.Salt);
+                        string convertedPassword = convertedHashResult.Salt + convertedHashResult.Digest;
+                        MessageBox.Show(user.Password + Environment.NewLine + Environment.NewLine + convertedPassword);
+
+                        // Validate password
+                        if (convertedPassword == user.Password)
+                        {
+                            MessageBox.Show("Logged in!");
+
+                            // Open all functionalities
+                        }
+                        else
+                        {
+                            // Display user error
+                            MessageBox.Show("Incorrect email / password combination. Please try again.");
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Email not found. Please try again.");
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please fill in all fields.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Write error to log and get file path
+                string filePath = ErrorLogger.LogError(ex);
+
+                // Display message box when an error occured with the appropiate error
+                MessageBox.Show("Something went wrong while trying to log in: " + ex.Message + Environment.NewLine
+                    + Environment.NewLine + "Error log location: " + filePath);
+            }
         }
     }
 }

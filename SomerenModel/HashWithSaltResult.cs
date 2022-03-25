@@ -1,0 +1,22 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace SomerenModel
+{
+    public class HashWithSaltResult
+    {
+        // Properties
+        public string Salt { get; }
+        public string Digest { get; set; }
+
+        // Constructor
+        public HashWithSaltResult(string salt, string digest)
+        {
+            Salt = salt;
+            Digest = digest;
+        }
+    }
+}
