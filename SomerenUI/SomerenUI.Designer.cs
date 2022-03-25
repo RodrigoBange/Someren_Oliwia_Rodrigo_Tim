@@ -39,10 +39,10 @@
             this.lecturersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.activitiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.supervisorsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.roomsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.stockManagementToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.drinkInventoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cashRegisterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.logOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlDashboard = new System.Windows.Forms.Panel();
             this.lbl_Dashboard = new System.Windows.Forms.Label();
             this.pnlStudents = new System.Windows.Forms.Panel();
@@ -103,7 +103,7 @@
             this.registerStudentFirstName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.registerStudentLastName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.registerStudentDOB = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.imgRegister = new System.Windows.Forms.PictureBox();
+            this.imgCashRegister = new System.Windows.Forms.PictureBox();
             this.lbl_CashRegister = new System.Windows.Forms.Label();
             this.pnlActivities = new System.Windows.Forms.Panel();
             this.dateTimePickerEnd = new System.Windows.Forms.DateTimePicker();
@@ -153,6 +153,19 @@
             this.btn_LogIn = new System.Windows.Forms.Button();
             this.imgLogin = new System.Windows.Forms.PictureBox();
             this.lbl_LoginTitle = new System.Windows.Forms.Label();
+            this.pnlRegister = new System.Windows.Forms.Panel();
+            this.txtBox_RegisterPasswordRetype = new System.Windows.Forms.TextBox();
+            this.lbl_RegisterPasswordRetype = new System.Windows.Forms.Label();
+            this.btn_DirectToLogin = new System.Windows.Forms.Button();
+            this.lbl_RegisterLogin = new System.Windows.Forms.Label();
+            this.txtBox_RegisterPassword = new System.Windows.Forms.TextBox();
+            this.txtBox_RegisterEmail = new System.Windows.Forms.TextBox();
+            this.lbl_RegisterPassword = new System.Windows.Forms.Label();
+            this.lbl_RegisterEmail = new System.Windows.Forms.Label();
+            this.lbl_RegisterSubTitle = new System.Windows.Forms.Label();
+            this.btn_Register = new System.Windows.Forms.Button();
+            this.imgRegister = new System.Windows.Forms.PictureBox();
+            this.lbl_RegisterTitle = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.imgDashboard)).BeginInit();
             this.menuStrip1.SuspendLayout();
             this.pnlDashboard.SuspendLayout();
@@ -163,13 +176,15 @@
             this.pnlDrinkInventory.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgInventory)).BeginInit();
             this.pnlCashRegister.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.imgRegister)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imgCashRegister)).BeginInit();
             this.pnlActivities.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgActivities)).BeginInit();
             this.pnlSupervisors.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgSupervisors)).BeginInit();
             this.pnlLogin.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgLogin)).BeginInit();
+            this.pnlRegister.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imgRegister)).BeginInit();
             this.SuspendLayout();
             // 
             // imgDashboard
@@ -195,13 +210,14 @@
             this.lecturersToolStripMenuItem,
             this.activitiesToolStripMenuItem,
             this.supervisorsToolStripMenuItem,
-            this.roomsToolStripMenuItem,
-            this.stockManagementToolStripMenuItem});
+            this.stockManagementToolStripMenuItem,
+            this.logOutToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1443, 33);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "menuStrip1";
+            this.menuStrip1.Visible = false;
             // 
             // dashboardToolStripMenuItem
             // 
@@ -260,13 +276,6 @@
             this.supervisorsToolStripMenuItem.Text = "Activity Supervisors";
             this.supervisorsToolStripMenuItem.Click += new System.EventHandler(this.SupervisorsToolStripMenuItem_Click);
             // 
-            // roomsToolStripMenuItem
-            // 
-            this.roomsToolStripMenuItem.Enabled = false;
-            this.roomsToolStripMenuItem.Name = "roomsToolStripMenuItem";
-            this.roomsToolStripMenuItem.Size = new System.Drawing.Size(84, 29);
-            this.roomsToolStripMenuItem.Text = "Rooms";
-            // 
             // stockManagementToolStripMenuItem
             // 
             this.stockManagementToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -289,6 +298,13 @@
             this.cashRegisterToolStripMenuItem.Size = new System.Drawing.Size(236, 34);
             this.cashRegisterToolStripMenuItem.Text = "Cash Register";
             this.cashRegisterToolStripMenuItem.Click += new System.EventHandler(this.CashRegisterToolStripMenuItem_Click);
+            // 
+            // logOutToolStripMenuItem
+            // 
+            this.logOutToolStripMenuItem.Name = "logOutToolStripMenuItem";
+            this.logOutToolStripMenuItem.Size = new System.Drawing.Size(93, 29);
+            this.logOutToolStripMenuItem.Text = "Log Out";
+            this.logOutToolStripMenuItem.Click += new System.EventHandler(this.LogOutToolStripMenuItem_Click);
             // 
             // pnlDashboard
             // 
@@ -673,7 +689,7 @@
             this.pnlCashRegister.Controls.Add(this.lbl_RegisterTotalPrice);
             this.pnlCashRegister.Controls.Add(this.btn_Checkout);
             this.pnlCashRegister.Controls.Add(this.listViewRegisterStudents);
-            this.pnlCashRegister.Controls.Add(this.imgRegister);
+            this.pnlCashRegister.Controls.Add(this.imgCashRegister);
             this.pnlCashRegister.Controls.Add(this.lbl_CashRegister);
             this.pnlCashRegister.Location = new System.Drawing.Point(18, 42);
             this.pnlCashRegister.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -860,16 +876,16 @@
             this.registerStudentDOB.Text = "Date Of Birth";
             this.registerStudentDOB.Width = 100;
             // 
-            // imgRegister
+            // imgCashRegister
             // 
-            this.imgRegister.Image = global::SomerenUI.Properties.Resources.someren;
-            this.imgRegister.InitialImage = ((System.Drawing.Image)(resources.GetObject("imgRegister.InitialImage")));
-            this.imgRegister.Location = new System.Drawing.Point(1208, 65);
-            this.imgRegister.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.imgRegister.Name = "imgRegister";
-            this.imgRegister.Size = new System.Drawing.Size(195, 189);
-            this.imgRegister.TabIndex = 0;
-            this.imgRegister.TabStop = false;
+            this.imgCashRegister.Image = global::SomerenUI.Properties.Resources.someren;
+            this.imgCashRegister.InitialImage = ((System.Drawing.Image)(resources.GetObject("imgCashRegister.InitialImage")));
+            this.imgCashRegister.Location = new System.Drawing.Point(1208, 65);
+            this.imgCashRegister.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.imgCashRegister.Name = "imgCashRegister";
+            this.imgCashRegister.Size = new System.Drawing.Size(195, 189);
+            this.imgCashRegister.TabIndex = 0;
+            this.imgCashRegister.TabStop = false;
             // 
             // lbl_CashRegister
             // 
@@ -1292,8 +1308,9 @@
             this.btn_DirectToRegister.Name = "btn_DirectToRegister";
             this.btn_DirectToRegister.Size = new System.Drawing.Size(188, 35);
             this.btn_DirectToRegister.TabIndex = 25;
-            this.btn_DirectToRegister.Text = "Create a new account";
+            this.btn_DirectToRegister.Text = "Create new account";
             this.btn_DirectToRegister.UseVisualStyleBackColor = true;
+            this.btn_DirectToRegister.Click += new System.EventHandler(this.Btn_DirectToRegister_Click);
             // 
             // lbl_LoginNoAccount
             // 
@@ -1393,13 +1410,160 @@
             this.lbl_LoginTitle.TabIndex = 3;
             this.lbl_LoginTitle.Text = "Login";
             // 
+            // pnlRegister
+            // 
+            this.pnlRegister.Controls.Add(this.txtBox_RegisterPasswordRetype);
+            this.pnlRegister.Controls.Add(this.lbl_RegisterPasswordRetype);
+            this.pnlRegister.Controls.Add(this.btn_DirectToLogin);
+            this.pnlRegister.Controls.Add(this.lbl_RegisterLogin);
+            this.pnlRegister.Controls.Add(this.txtBox_RegisterPassword);
+            this.pnlRegister.Controls.Add(this.txtBox_RegisterEmail);
+            this.pnlRegister.Controls.Add(this.lbl_RegisterPassword);
+            this.pnlRegister.Controls.Add(this.lbl_RegisterEmail);
+            this.pnlRegister.Controls.Add(this.lbl_RegisterSubTitle);
+            this.pnlRegister.Controls.Add(this.btn_Register);
+            this.pnlRegister.Controls.Add(this.imgRegister);
+            this.pnlRegister.Controls.Add(this.lbl_RegisterTitle);
+            this.pnlRegister.Location = new System.Drawing.Point(18, 42);
+            this.pnlRegister.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.pnlRegister.Name = "pnlRegister";
+            this.pnlRegister.Size = new System.Drawing.Size(1407, 717);
+            this.pnlRegister.TabIndex = 11;
+            // 
+            // txtBox_RegisterPasswordRetype
+            // 
+            this.txtBox_RegisterPasswordRetype.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBox_RegisterPasswordRetype.Location = new System.Drawing.Point(24, 368);
+            this.txtBox_RegisterPasswordRetype.Name = "txtBox_RegisterPasswordRetype";
+            this.txtBox_RegisterPasswordRetype.Size = new System.Drawing.Size(230, 32);
+            this.txtBox_RegisterPasswordRetype.TabIndex = 27;
+            // 
+            // lbl_RegisterPasswordRetype
+            // 
+            this.lbl_RegisterPasswordRetype.AutoSize = true;
+            this.lbl_RegisterPasswordRetype.BackColor = System.Drawing.Color.Transparent;
+            this.lbl_RegisterPasswordRetype.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_RegisterPasswordRetype.ForeColor = System.Drawing.Color.White;
+            this.lbl_RegisterPasswordRetype.Location = new System.Drawing.Point(20, 327);
+            this.lbl_RegisterPasswordRetype.Name = "lbl_RegisterPasswordRetype";
+            this.lbl_RegisterPasswordRetype.Size = new System.Drawing.Size(210, 29);
+            this.lbl_RegisterPasswordRetype.TabIndex = 26;
+            this.lbl_RegisterPasswordRetype.Text = "Re-type Password";
+            // 
+            // btn_DirectToLogin
+            // 
+            this.btn_DirectToLogin.Location = new System.Drawing.Point(24, 538);
+            this.btn_DirectToLogin.Name = "btn_DirectToLogin";
+            this.btn_DirectToLogin.Size = new System.Drawing.Size(120, 35);
+            this.btn_DirectToLogin.TabIndex = 25;
+            this.btn_DirectToLogin.Text = "Log in";
+            this.btn_DirectToLogin.UseVisualStyleBackColor = true;
+            this.btn_DirectToLogin.Click += new System.EventHandler(this.Btn_DirectToLogin_Click);
+            // 
+            // lbl_RegisterLogin
+            // 
+            this.lbl_RegisterLogin.AutoSize = true;
+            this.lbl_RegisterLogin.BackColor = System.Drawing.Color.Transparent;
+            this.lbl_RegisterLogin.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_RegisterLogin.ForeColor = System.Drawing.Color.White;
+            this.lbl_RegisterLogin.Location = new System.Drawing.Point(20, 491);
+            this.lbl_RegisterLogin.Name = "lbl_RegisterLogin";
+            this.lbl_RegisterLogin.Size = new System.Drawing.Size(499, 32);
+            this.lbl_RegisterLogin.TabIndex = 24;
+            this.lbl_RegisterLogin.Text = "Already have an account? Log in here:";
+            // 
+            // txtBox_RegisterPassword
+            // 
+            this.txtBox_RegisterPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBox_RegisterPassword.Location = new System.Drawing.Point(25, 270);
+            this.txtBox_RegisterPassword.Name = "txtBox_RegisterPassword";
+            this.txtBox_RegisterPassword.Size = new System.Drawing.Size(230, 32);
+            this.txtBox_RegisterPassword.TabIndex = 23;
+            // 
+            // txtBox_RegisterEmail
+            // 
+            this.txtBox_RegisterEmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtBox_RegisterEmail.Location = new System.Drawing.Point(24, 173);
+            this.txtBox_RegisterEmail.Name = "txtBox_RegisterEmail";
+            this.txtBox_RegisterEmail.Size = new System.Drawing.Size(230, 32);
+            this.txtBox_RegisterEmail.TabIndex = 22;
+            // 
+            // lbl_RegisterPassword
+            // 
+            this.lbl_RegisterPassword.AutoSize = true;
+            this.lbl_RegisterPassword.BackColor = System.Drawing.Color.Transparent;
+            this.lbl_RegisterPassword.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_RegisterPassword.ForeColor = System.Drawing.Color.White;
+            this.lbl_RegisterPassword.Location = new System.Drawing.Point(19, 230);
+            this.lbl_RegisterPassword.Name = "lbl_RegisterPassword";
+            this.lbl_RegisterPassword.Size = new System.Drawing.Size(120, 29);
+            this.lbl_RegisterPassword.TabIndex = 21;
+            this.lbl_RegisterPassword.Text = "Password";
+            // 
+            // lbl_RegisterEmail
+            // 
+            this.lbl_RegisterEmail.AutoSize = true;
+            this.lbl_RegisterEmail.BackColor = System.Drawing.Color.Transparent;
+            this.lbl_RegisterEmail.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_RegisterEmail.ForeColor = System.Drawing.Color.White;
+            this.lbl_RegisterEmail.Location = new System.Drawing.Point(20, 133);
+            this.lbl_RegisterEmail.Name = "lbl_RegisterEmail";
+            this.lbl_RegisterEmail.Size = new System.Drawing.Size(169, 29);
+            this.lbl_RegisterEmail.TabIndex = 20;
+            this.lbl_RegisterEmail.Text = "Email Address";
+            // 
+            // lbl_RegisterSubTitle
+            // 
+            this.lbl_RegisterSubTitle.AutoSize = true;
+            this.lbl_RegisterSubTitle.BackColor = System.Drawing.Color.Transparent;
+            this.lbl_RegisterSubTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_RegisterSubTitle.ForeColor = System.Drawing.Color.White;
+            this.lbl_RegisterSubTitle.Location = new System.Drawing.Point(18, 62);
+            this.lbl_RegisterSubTitle.Name = "lbl_RegisterSubTitle";
+            this.lbl_RegisterSubTitle.Size = new System.Drawing.Size(288, 32);
+            this.lbl_RegisterSubTitle.TabIndex = 19;
+            this.lbl_RegisterSubTitle.Text = "Create a new account";
+            // 
+            // btn_Register
+            // 
+            this.btn_Register.Location = new System.Drawing.Point(24, 428);
+            this.btn_Register.Name = "btn_Register";
+            this.btn_Register.Size = new System.Drawing.Size(196, 35);
+            this.btn_Register.TabIndex = 6;
+            this.btn_Register.Text = "Create new account";
+            this.btn_Register.UseVisualStyleBackColor = true;
+            this.btn_Register.Click += new System.EventHandler(this.Btn_Register_Click);
+            // 
+            // imgRegister
+            // 
+            this.imgRegister.Image = global::SomerenUI.Properties.Resources.someren;
+            this.imgRegister.InitialImage = ((System.Drawing.Image)(resources.GetObject("imgRegister.InitialImage")));
+            this.imgRegister.Location = new System.Drawing.Point(1208, 65);
+            this.imgRegister.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.imgRegister.Name = "imgRegister";
+            this.imgRegister.Size = new System.Drawing.Size(195, 189);
+            this.imgRegister.TabIndex = 0;
+            this.imgRegister.TabStop = false;
+            // 
+            // lbl_RegisterTitle
+            // 
+            this.lbl_RegisterTitle.AutoSize = true;
+            this.lbl_RegisterTitle.BackColor = System.Drawing.Color.Transparent;
+            this.lbl_RegisterTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 17F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbl_RegisterTitle.ForeColor = System.Drawing.Color.White;
+            this.lbl_RegisterTitle.Location = new System.Drawing.Point(15, 15);
+            this.lbl_RegisterTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbl_RegisterTitle.Name = "lbl_RegisterTitle";
+            this.lbl_RegisterTitle.Size = new System.Drawing.Size(144, 39);
+            this.lbl_RegisterTitle.TabIndex = 3;
+            this.lbl_RegisterTitle.Text = "Register";
+            // 
             // SomerenUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(8)))), ((int)(((byte)(20)))), ((int)(((byte)(48)))));
             this.ClientSize = new System.Drawing.Size(1443, 777);
-            this.Controls.Add(this.pnlLogin);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.pnlDashboard);
             this.Controls.Add(this.pnlStudents);
@@ -1408,6 +1572,8 @@
             this.Controls.Add(this.pnlSupervisors);
             this.Controls.Add(this.pnlDrinkInventory);
             this.Controls.Add(this.pnlCashRegister);
+            this.Controls.Add(this.pnlLogin);
+            this.Controls.Add(this.pnlRegister);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
@@ -1431,7 +1597,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.imgInventory)).EndInit();
             this.pnlCashRegister.ResumeLayout(false);
             this.pnlCashRegister.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.imgRegister)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.imgCashRegister)).EndInit();
             this.pnlActivities.ResumeLayout(false);
             this.pnlActivities.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgActivities)).EndInit();
@@ -1441,6 +1607,9 @@
             this.pnlLogin.ResumeLayout(false);
             this.pnlLogin.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.imgLogin)).EndInit();
+            this.pnlRegister.ResumeLayout(false);
+            this.pnlRegister.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.imgRegister)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1459,7 +1628,6 @@
         private System.Windows.Forms.ToolStripMenuItem studentsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem lecturersToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem activitiesToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem roomsToolStripMenuItem;
         private System.Windows.Forms.Panel pnlStudents;
         private System.Windows.Forms.Label lbl_Students;
         private System.Windows.Forms.PictureBox imgStudents;
@@ -1508,7 +1676,7 @@
         private System.Windows.Forms.ColumnHeader registerStudentFirstName;
         private System.Windows.Forms.ColumnHeader registerStudentLastName;
         private System.Windows.Forms.ColumnHeader registerStudentId;
-        private System.Windows.Forms.PictureBox imgRegister;
+        private System.Windows.Forms.PictureBox imgCashRegister;
         private System.Windows.Forms.Label lbl_CashRegister;
         private System.Windows.Forms.ListView listViewRegisterDrinks;
         private System.Windows.Forms.ColumnHeader registerDrinkName;
@@ -1572,6 +1740,20 @@
         private System.Windows.Forms.Button btn_LogIn;
         private System.Windows.Forms.PictureBox imgLogin;
         private System.Windows.Forms.Label lbl_LoginTitle;
+        private System.Windows.Forms.ToolStripMenuItem logOutToolStripMenuItem;
+        private System.Windows.Forms.Panel pnlRegister;
+        private System.Windows.Forms.TextBox txtBox_RegisterPasswordRetype;
+        private System.Windows.Forms.Label lbl_RegisterPasswordRetype;
+        private System.Windows.Forms.Button btn_DirectToLogin;
+        private System.Windows.Forms.Label lbl_RegisterLogin;
+        private System.Windows.Forms.TextBox txtBox_RegisterPassword;
+        private System.Windows.Forms.TextBox txtBox_RegisterEmail;
+        private System.Windows.Forms.Label lbl_RegisterPassword;
+        private System.Windows.Forms.Label lbl_RegisterEmail;
+        private System.Windows.Forms.Label lbl_RegisterSubTitle;
+        private System.Windows.Forms.Button btn_Register;
+        private System.Windows.Forms.PictureBox imgRegister;
+        private System.Windows.Forms.Label lbl_RegisterTitle;
     }
 }
 

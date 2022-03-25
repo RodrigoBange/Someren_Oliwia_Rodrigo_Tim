@@ -26,27 +26,8 @@ namespace SomerenUI
 
         private void SomerenUI_Load(object sender, EventArgs e)
         {
-            // Show dashboard panel
-            ShowPanel("Dashboard");
-
-            // Testing password on load
-            // FOR REGISTRATION
-            //PasswordWithSaltHasher pwHasher = new PasswordWithSaltHasher();
-            //HashWithSaltResult hashResultSha256 = pwHasher.HashWithSalt("test_P455", 64, SHA256.Create());
-
-            //string password = hashResultSha256.Salt + hashResultSha256.Digest;
-
-            //Account user = new Account()
-            //{
-            //    Email = "user@gmail.com",
-            //    Password = password,
-            //    Salt = hashResultSha256.Salt,
-            //    IsAdmin = false
-            //};
-
-            //AccountService accountService = new AccountService();
-            //accountService.RegisterAccount(user);
-
+            // Show login panel
+            ShowPanel("Login");
         }
 
         /* PANEL BEHAVIOURS */
@@ -60,6 +41,16 @@ namespace SomerenUI
                 // Show Dashboard
                 pnlDashboard.Show();
                 imgDashboard.Show();
+            }
+            else if (panelName == "Login" && !pnlLogin.Visible)
+            {
+                // Show Login panel
+                pnlLogin.Show();
+            }
+            else if (panelName == "Register" && !pnlLogin.Visible)
+            {
+                // Show Register panel
+                //pnlRegister.Show();
             }
             else if (panelName == "Students" && !pnlStudents.Visible) // If the panelName is Students and is not visible...
             {
@@ -211,7 +202,6 @@ namespace SomerenUI
                         else { li.SubItems.Add("Non-Alcoholic"); }
                         li.SubItems.Add(drink.Stock.ToString());
                         listViewRegisterDrinks.Items.Add(li);
-
                     }
                 }
                 catch (Exception ex)
@@ -299,6 +289,7 @@ namespace SomerenUI
         {
             // Hide all panels
             pnlDashboard.Hide();
+            pnlLogin.Hide();
             imgDashboard.Hide();
             pnlStudents.Hide();            
             pnlTeachers.Hide();
@@ -361,6 +352,21 @@ namespace SomerenUI
         {
             // Call method to display panel Supervisors
             ShowPanel("Supervisors");
+        }
+
+        private void LogOutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            // Display logged out message
+            MessageBox.Show("Successfully logged out.");
+
+            // Disable menu strip for user
+            menuStrip1.Visible = false;
+
+            // Reset all input boxes
+            ResetAllInput();
+
+            // Call method to go back to the login panel
+            ShowPanel("Login");
         }
 
         /* LISTVIEW BEHAVIOURS */
@@ -1052,6 +1058,24 @@ namespace SomerenUI
             }
         }
 
+        private void Btn_DirectToLogin_Click(object sender, EventArgs e)
+        {
+            // Clear boxes (In case of user swapping)
+            ResetAllInput();
+
+            // Show Login panel
+            ShowPanel("Login");
+        }
+
+        private void Btn_DirectToRegister_Click(object sender, EventArgs e)
+        {
+            // Clear boxes (In case of user swapping)
+            ResetAllInput();
+
+            // Show Register panel
+            ShowPanel("Register");
+        }
+
         /* RESET ALL INPUT METHOD */
         private void ResetAllInput()
         {
@@ -1075,6 +1099,102 @@ namespace SomerenUI
             // Disable all buttons - Supervisors
             btn_AddSupervisor.Enabled = false; 
             btn_RemoveSupervisor.Enabled = false;
+
+            // Clear text boxes -- Login
+            txtBox_LoginEmail.Clear();
+            txtBox_LoginPassword.Clear();
+
+            // Clear text boxes -- Register
+            txtBox_RegisterEmail.Clear();
+            txtBox_RegisterPassword.Clear();
+            txtBox_RegisterPasswordRetype.Clear();
+        }
+
+        /* DECIDE FUNCTIONS BY USER TYPE METHOD */
+        private void FunctionsByUserType(Account user)
+        {
+            if (user.IsAdmin)
+            {
+                // Enable all buttons to adjust values
+                //-- Activities
+                btn_AddActivity.Visible = true;
+                btn_RemoveActivity.Visible = true;
+                btn_ChangeActivity.Visible = true;
+                txtBox_ActivityName.Visible = true;
+                txtBox_ActivityDescription.Visible = true;
+                dateTimePickerStart.Visible = true;
+                dateTimePickerEnd.Visible = true;
+                lbl_ActivityName.Visible = true;
+                lbl_ActivityDescription.Visible = true;
+                lbl_ActivityStartDate.Visible = true;
+                lbl_ActivityEndDate.Visible = true;
+
+                //-- Supervisors
+                btn_AddSupervisor.Visible = true;
+                btn_RemoveSupervisor.Visible = true;
+
+                //-- Drinks
+                btn_AddDrink.Visible = true;
+                btn_RemoveDrink.Visible = true;
+                btn_EditDrink.Visible = true;
+                txtBox_DrinkName.Visible = true;
+                txtBox_DrinkPrice.Visible = true;
+                txtBox_DrinkStock.Visible = true;
+                cBox_DrinkType.Visible = true;
+                lbl_DrinkName.Visible = true;
+                lbl_DrinkPrice.Visible = true;
+                lbl_DrinkType.Visible = true;
+                lbl_DrinkStock.Visible = true;
+
+                //-- Stock
+                btn_StockPlus.Visible = true;
+                btn_StockMinus.Visible = true;
+                btn_Checkout.Visible = true;
+            }
+            else
+            {
+                // Disable all buttons to adjust values
+                //-- Activities
+                btn_AddActivity.Visible = false;
+                btn_RemoveActivity.Visible = false;
+                btn_ChangeActivity.Visible = false;
+                txtBox_ActivityName.Visible = false;
+                txtBox_ActivityDescription.Visible = false;
+                dateTimePickerStart.Visible = false;
+                dateTimePickerEnd.Visible = false;
+                lbl_ActivityName.Visible = false;
+                lbl_ActivityDescription.Visible = false;
+                lbl_ActivityStartDate.Visible = false;
+                lbl_ActivityEndDate.Visible = false;
+
+                //-- Supervisors
+                btn_AddSupervisor.Visible = false;
+                btn_RemoveSupervisor.Visible = false;
+
+                //-- Drinks
+                btn_AddDrink.Visible = false;
+                btn_RemoveDrink.Visible = false;
+                btn_EditDrink.Visible = false;
+                txtBox_DrinkName.Visible = false;
+                txtBox_DrinkPrice.Visible = false;
+                txtBox_DrinkStock.Visible = false;
+                cBox_DrinkType.Visible = false;
+                lbl_DrinkName.Visible = false;
+                lbl_DrinkPrice.Visible = false;
+                lbl_DrinkType.Visible = false;
+                lbl_DrinkStock.Visible = false;
+
+                //-- Stock
+                btn_StockPlus.Visible = true;
+                btn_StockMinus.Visible = true;
+                btn_Checkout.Visible = false;
+            }
+
+            // Enable all navigation buttons
+            menuStrip1.Visible = true;
+
+            // Open dashboard
+            ShowPanel("Dashboard");
         }
 
         private void Btn_LogIn_Click(object sender, EventArgs e)
@@ -1101,14 +1221,18 @@ namespace SomerenUI
                         PasswordWithSaltHasher hasher = new PasswordWithSaltHasher();
                         HashWithSaltResult convertedHashResult = hasher.ConvertedHashWithSalt(password, user.Salt);
                         string convertedPassword = convertedHashResult.Salt + convertedHashResult.Digest;
-                        MessageBox.Show(user.Password + Environment.NewLine + Environment.NewLine + convertedPassword);
+
+                        // Test Messagebox to compare hashed+salted passwords from user input and database password
+                        //MessageBox.Show(user.Password + Environment.NewLine + Environment.NewLine + convertedPassword);
 
                         // Validate password
                         if (convertedPassword == user.Password)
                         {
-                            MessageBox.Show("Logged in!");
+                            // Display success message
+                            MessageBox.Show("Sucessfully logged in.");
 
                             // Open all functionalities
+                            FunctionsByUserType(user);
                         }
                         else
                         {
@@ -1118,14 +1242,15 @@ namespace SomerenUI
                     }
                     else
                     {
+                        // Display email not found error
                         MessageBox.Show("Email not found. Please try again.");
                     }
                 }
                 else
                 {
+                    // Display blank fields error
                     MessageBox.Show("Please fill in all fields.");
                 }
-
             }
             catch (Exception ex)
             {
@@ -1136,6 +1261,11 @@ namespace SomerenUI
                 MessageBox.Show("Something went wrong while trying to log in: " + ex.Message + Environment.NewLine
                     + Environment.NewLine + "Error log location: " + filePath);
             }
+        }
+
+        private void Btn_Register_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
