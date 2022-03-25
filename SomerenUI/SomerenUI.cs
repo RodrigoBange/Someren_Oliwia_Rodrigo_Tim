@@ -47,10 +47,10 @@ namespace SomerenUI
                 // Show Login panel
                 pnlLogin.Show();
             }
-            else if (panelName == "Register" && !pnlLogin.Visible)
+            else if (panelName == "Register" && !pnlRegister.Visible)
             {
                 // Show Register panel
-                //pnlRegister.Show();
+                pnlRegister.Show();
             }
             else if (panelName == "Students" && !pnlStudents.Visible) // If the panelName is Students and is not visible...
             {
@@ -290,6 +290,7 @@ namespace SomerenUI
             // Hide all panels
             pnlDashboard.Hide();
             pnlLogin.Hide();
+            pnlRegister.Hide();
             imgDashboard.Hide();
             pnlStudents.Hide();            
             pnlTeachers.Hide();
