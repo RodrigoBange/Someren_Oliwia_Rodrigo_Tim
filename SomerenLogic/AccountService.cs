@@ -11,7 +11,7 @@ namespace SomerenLogic
 {
     public class AccountService
     {
-        AccountDao accountdb; 
+        AccountDao accountdb;
 
         // Constructor
         public AccountService()
@@ -42,6 +42,15 @@ namespace SomerenLogic
 
             // Return account
             return account;
+        }
+        public bool GetUserEmail(string email)
+        {
+            //Create query
+            string query = $"SELECT Email FROM USERS WHERE Email = '{email}';";
+
+            //Return bool
+            return accountdb.EmailExists(query);
+
         }
     }
 }

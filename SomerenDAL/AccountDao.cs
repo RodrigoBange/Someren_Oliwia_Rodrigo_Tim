@@ -27,6 +27,14 @@ namespace SomerenDAL
             ExecuteEditQuery(query, sqlParameters);
         }
 
+        public bool EmailExists(string query)
+        {
+            SqlParameter[] sqlParameters = new SqlParameter[0];
+
+            // Execute query
+            return ReadEmail(ExecuteSelectQuery(query, sqlParameters));
+        }
+
         private Account ReadTable(DataTable dataTable)
         {
             // Create new Account object
@@ -56,6 +64,26 @@ namespace SomerenDAL
 
             // Return the account data
             return account;
+        }
+
+        private bool ReadEmail(DataTable dataTable)
+        {
+            try
+            {
+                // If a matching email has been found
+                if (dataTable.Rows.Count > 0)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("There is an issue reading the user email data from the database.");
+            }
         }
     }
 }
