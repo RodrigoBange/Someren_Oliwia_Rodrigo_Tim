@@ -1257,7 +1257,7 @@ namespace SomerenUI
             }
             catch (Exception ex)
             {
-                // Write error to log and get file path
+                // Write error to log and get file path.
                 string filePath = ErrorLogger.LogError(ex);
 
                 // Display message box when an error occured with the appropiate error
@@ -1265,7 +1265,7 @@ namespace SomerenUI
                     + Environment.NewLine + "Error log location: " + filePath);
             }
         }
-
+        
         private void Btn_Register_Click(object sender, EventArgs e)
         {
             // Get txtBox info
