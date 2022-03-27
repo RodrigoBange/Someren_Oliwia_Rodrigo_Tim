@@ -1078,6 +1078,186 @@ namespace SomerenUI
             ShowPanel("Register");
         }
 
+        private void Btn_LogIn_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                // Get txtBox info
+                string email = txtBox_LoginEmail.Text;
+                string password = txtBox_LoginPassword.Text;
+
+                // If values have been entered
+                if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password))
+                {
+                    // Create new AccountService
+                    AccountService accountService = new AccountService();
+
+                    // Get user information from database
+                    Account user = accountService.GetUserInfo(email);
+
+                    // If user has been found
+                    if (user != null)
+                    {
+                        // Convert password
+                        PasswordWithSaltHasher hasher = new PasswordWithSaltHasher();
+                        HashWithSaltResult convertedHashResult = hasher.ConvertedHashWithSalt(password, user.Salt);
+                        string convertedPassword = convertedHashResult.Digest;
+
+                        // Test Messagebox to compare hashed+salted passwords from user input and database password
+                        //sMessageBox.Show(user.Password + Environment.NewLine + Environment.NewLine + convertedPassword);
+
+                        // Validate password
+                        if (convertedPassword == user.Password)
+                        {
+                            // Display success message
+                            MessageBox.Show("Sucessfully logged in.");
+
+                            // Open all functionalities
+                            FunctionsByUserType(user);
+                        }
+                        else
+                        {
+                            // Display user error
+                            MessageBox.Show("Incorrect email / password combination. Please try again.");
+                        }
+                    }
+                    else
+                    {
+                        // Display email not found error
+                        MessageBox.Show("Email not found. Please try again.");
+                    }
+                }
+                else
+                {
+                    // Display blank fields error
+                    MessageBox.Show("Please fill in all fields.");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Write error to log and get file path.
+                string filePath = ErrorLogger.LogError(ex);
+
+                // Display message box when an error occured with the appropiate error
+                MessageBox.Show("Something went wrong while trying to log in: " + ex.Message + Environment.NewLine
+                    + Environment.NewLine + "Error log location: " + filePath);
+            }
+        }
+
+        private void Btn_Register_Click(object sender, EventArgs e)
+        {
+            // Get txtBox info
+            string registerEmail = txtBox_RegisterEmail.Text;
+            string registerPassword = txtBox_RegisterPassword.Text;
+            string registerPasswordRetype = txtBox_RegisterPasswordRetype.Text;
+            string registerLicense = txtBox_RegisterLicense.Text;
+            string license = "XsZAb-tgz3PsD-qYh69un-WQCEx";
+
+            //Create symbol refex
+            var passwordValidation = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]+");
+
+            // Remove white space from entered license key
+            registerLicense = registerLicense.Replace(" ", String.Empty);
+
+            try
+            {
+                // If values have been entered
+                if (!string.IsNullOrEmpty(registerEmail) && !string.IsNullOrEmpty(registerPassword) && !string.IsNullOrEmpty(registerPasswordRetype) && !string.IsNullOrEmpty(registerLicense))
+                {
+                    //Create new account service
+                    AccountService accountService = new AccountService();
+
+                    //If email does not exist
+                    if (!accountService.GetUserEmail(registerEmail))
+                    {
+                        //If passwords are a match
+                        if (registerPassword == registerPasswordRetype)
+                        {
+                            //If license key was enetered correctly 
+                            if (registerLicense == license)
+                            {
+                                //If password requirements are met
+                                if (registerPassword.Length >= 8 && registerPassword.Any(char.IsUpper) && registerPassword.Any(char.IsLower) && passwordValidation.IsMatch(registerPassword) && registerPassword.Any(char.IsNumber))
+                                {
+                                    //Create a new password with SaltHash object
+                                    PasswordWithSaltHasher passwordWithSaltHasher = new PasswordWithSaltHasher();
+
+                                    //Create a new Hash with Salt object 
+                                    HashWithSaltResult hashWithSaltResult = passwordWithSaltHasher.HashWithSalt(registerPassword, 64, SHA256.Create());
+
+                                    //Create new Account objects
+                                    Account account = new Account
+                                    {
+                                        //Save the variables to the new user
+                                        Email = registerEmail,
+                                        Password = hashWithSaltResult.Digest,
+                                        Salt = hashWithSaltResult.Salt,
+                                        IsAdmin = false
+                                    };
+
+                                    //Add user to the database
+                                    accountService.RegisterAccount(account);
+
+                                    //Show the messagebox if the account was created 
+                                    MessageBox.Show("The account was succesfully created");
+
+                                    // Clear boxes (In case of user swapping)
+                                    ResetAllInput();
+
+                                    // Show Login panel
+                                    ShowPanel("Login");
+
+                                    // Fill in login info
+                                    txtBox_LoginEmail.Text = registerEmail;
+                                    txtBox_LoginPassword.Text = registerPassword;
+                                }
+                                else
+                                {
+                                    // Display password requirements
+                                    MessageBox.Show("Password need to contain: "
+                                        + Environment.NewLine + "- Minimum length 8 characters"
+                                        + Environment.NewLine + "- Minimum of 1 lowercase letter"
+                                        + Environment.NewLine + "- Minimum of 1 uppercase letter"
+                                        + Environment.NewLine + "- Minimum of 1 number"
+                                        + Environment.NewLine + "- Minimum of 1 special character (not a letter and not a number)");
+                                }
+                            }
+                            else
+                            {
+                                // Display license error
+                                MessageBox.Show("Entered license is invalid.");
+                            }
+                        }
+                        else
+                        {
+                            //Show the message box if passwords do not match 
+                            MessageBox.Show("Passwords do not match.");
+                        }
+                    }
+                    else
+                    {
+                        //Show the message box if already exist
+                        MessageBox.Show("The E-mail already has been used.");
+                    }
+                }
+                else
+                {
+                    //Show the messagebox if all boxes are not filled out
+                    MessageBox.Show("Please fill out all boxes.");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                // Write error to log and get file path
+                string filePath = ErrorLogger.LogError(ex);
+
+                // Display message box when an error occured with the appropiate error
+                MessageBox.Show("Something went wrong while trying to log in: " + ex.Message + Environment.NewLine
+                    + Environment.NewLine + "Error log location: " + filePath);
+            }
+        }
+
         /* RESET ALL INPUT METHOD */
         private void ResetAllInput()
         {
@@ -1200,185 +1380,6 @@ namespace SomerenUI
             ShowPanel("Dashboard");
         }
 
-        private void Btn_LogIn_Click(object sender, EventArgs e)
-        {
-            try
-            {   
-                // Get txtBox info
-                string email = txtBox_LoginEmail.Text;
-                string password = txtBox_LoginPassword.Text;
 
-                // If values have been entered
-                if (!string.IsNullOrEmpty(email) && !string.IsNullOrEmpty(password))
-                {
-                    // Create new AccountService
-                    AccountService accountService = new AccountService();
-
-                    // Get user information from database
-                    Account user = accountService.GetUserInfo(email);
-
-                    // If user has been found
-                    if (user != null)
-                    {
-                        // Convert password
-                        PasswordWithSaltHasher hasher = new PasswordWithSaltHasher();
-                        HashWithSaltResult convertedHashResult = hasher.ConvertedHashWithSalt(password, user.Salt);
-                        string convertedPassword = convertedHashResult.Digest;
-
-                        // Test Messagebox to compare hashed+salted passwords from user input and database password
-                        //sMessageBox.Show(user.Password + Environment.NewLine + Environment.NewLine + convertedPassword);
-
-                        // Validate password
-                        if (convertedPassword == user.Password)
-                        {
-                            // Display success message
-                            MessageBox.Show("Sucessfully logged in.");
-
-                            // Open all functionalities
-                            FunctionsByUserType(user);
-                        }
-                        else
-                        {
-                            // Display user error
-                            MessageBox.Show("Incorrect email / password combination. Please try again.");
-                        }
-                    }
-                    else
-                    {
-                        // Display email not found error
-                        MessageBox.Show("Email not found. Please try again.");
-                    }
-                }
-                else
-                {
-                    // Display blank fields error
-                    MessageBox.Show("Please fill in all fields.");
-                }
-            }
-            catch (Exception ex)
-            {
-                // Write error to log and get file path.
-                string filePath = ErrorLogger.LogError(ex);
-
-                // Display message box when an error occured with the appropiate error
-                MessageBox.Show("Something went wrong while trying to log in: " + ex.Message + Environment.NewLine
-                    + Environment.NewLine + "Error log location: " + filePath);
-            }
-        }
-        
-        private void Btn_Register_Click(object sender, EventArgs e)
-        {
-            // Get txtBox info
-            string registerEmail = txtBox_RegisterEmail.Text;
-            string registerPassword = txtBox_RegisterPassword.Text;
-            string registerPasswordRetype = txtBox_RegisterPasswordRetype.Text;
-            string registerLicense = txtBox_RegisterLicense.Text;
-            string license = "XsZAb-tgz3PsD-qYh69un-WQCEx";
-
-            //Create symbol refex
-            var passwordValidation = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]+");
-
-            // Remove white space from entered license key
-            registerLicense = registerLicense.Replace(" ", String.Empty);
-
-            try
-            {
-                // If values have been entered
-                if (!string.IsNullOrEmpty(registerEmail) && !string.IsNullOrEmpty(registerPassword) && !string.IsNullOrEmpty(registerPasswordRetype) && !string.IsNullOrEmpty(registerLicense))
-                {
-                    //Create new account service
-                    AccountService accountService = new AccountService();
-
-                    //If email does not exist
-                    if (!accountService.GetUserEmail(registerEmail))
-                    {
-                        //If passwords are a match
-                        if (registerPassword == registerPasswordRetype)
-                        {
-                            //If license key was enetered correctly 
-                            if (registerLicense == license)
-                            {
-                                //If password requirements are met
-                                if (registerPassword.Length >= 8 && registerPassword.Any(char.IsUpper) && registerPassword.Any(char.IsLower) && passwordValidation.IsMatch(registerPassword) && registerPassword.Any(char.IsNumber))
-                                {
-                                    //Create a new password with SaltHash object
-                                    PasswordWithSaltHasher passwordWithSaltHasher = new PasswordWithSaltHasher();
-
-                                    //Create a new Hash with Salt object 
-                                    HashWithSaltResult hashWithSaltResult = passwordWithSaltHasher.HashWithSalt(registerPassword, 64, SHA256.Create());
-
-                                    //Create new Account objects
-                                    Account account = new Account();
-
-                                    //Save the variables to the new user
-                                    account.Email = registerEmail;
-                                    account.Password = hashWithSaltResult.Digest;
-                                    account.Salt = hashWithSaltResult.Salt;
-                                    account.IsAdmin = false;
-
-                                    //Add user to the database
-                                    accountService.RegisterAccount(account);
-
-                                    //Show the messagebox if the account was created 
-                                    MessageBox.Show("The account was succesfully created");
-
-                                    // Clear boxes (In case of user swapping)
-                                    ResetAllInput();
-
-                                    // Show Login panel
-                                    ShowPanel("Login");
-
-                                    // Fill in login info
-                                    txtBox_LoginEmail.Text = registerEmail;
-                                    txtBox_LoginPassword.Text = registerPassword;
-                                }
-                                else
-                                {
-                                    // Display password requirements
-                                    MessageBox.Show("Password need to contain: " 
-                                        + Environment.NewLine + "- Minimum length 8 characters"
-                                        + Environment.NewLine + "- Minimum of 1 lowercase letter"
-                                        + Environment.NewLine + "- Minimum of 1 uppercase letter"
-                                        + Environment.NewLine + "- Minimum of 1 number"
-                                        + Environment.NewLine + "- Minimum of 1 special character (not a letter and not a number)");
-                                }
-                            }
-                            else
-                            {
-                                // Display license error
-                                MessageBox.Show("Entered license is invalid.");
-                            }
-                        }
-                        else
-                        {
-                            //Show the message box if passwords do not match 
-                            MessageBox.Show("Passwords do not match.");
-                        }
-                    }
-                    else
-                    {
-                        //Show the message box if already exist
-                        MessageBox.Show("The E-mail already has been used.");
-                    }
-                }
-                else 
-                {
-                    //Show the messagebox if all boxes are not filled out
-                    MessageBox.Show("Please fill out all boxes.");
-                }
-
-            }
-            catch (Exception ex)
-            {
-                // Write error to log and get file path
-                string filePath = ErrorLogger.LogError(ex);
-
-                // Display message box when an error occured with the appropiate error
-                MessageBox.Show("Something went wrong while trying to log in: " + ex.Message + Environment.NewLine
-                    + Environment.NewLine + "Error log location: " + filePath);
-            }
-        }
-
-       
     }
 }
