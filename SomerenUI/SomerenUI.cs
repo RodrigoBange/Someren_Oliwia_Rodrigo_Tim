@@ -1273,7 +1273,7 @@ namespace SomerenUI
             string registerPassword = txtBox_RegisterPassword.Text;
             string registerPasswordRetype = txtBox_RegisterPasswordRetype.Text;
             string registerLicense = txtBox_RegisterLicense.Text;
-            string license = "XsZAb-tez3PsD-qYh69un-WQCEx";
+            string license = "XsZAb-tgz3PsD-qYh69un-WQCEx";
 
             //Create symbol refex
             var passwordValidation = new Regex(@"[!@#$%^&*()_+=\[{\]};:<>|./?,-]+");
@@ -1299,7 +1299,7 @@ namespace SomerenUI
                             if (registerLicense == license)
                             {
                                 //If password requirements are met
-                                if (registerPassword.Length >= 8 && registerPassword.Any(char.IsUpper) && passwordValidation.IsMatch(registerPassword) && registerPassword.Any(char.IsNumber))
+                                if (registerPassword.Length >= 8 && registerPassword.Any(char.IsUpper) && registerPassword.Any(char.IsLower) && passwordValidation.IsMatch(registerPassword) && registerPassword.Any(char.IsNumber))
                                 {
                                     //Create a new password with SaltHash object
                                     PasswordWithSaltHasher passwordWithSaltHasher = new PasswordWithSaltHasher();
